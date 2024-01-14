@@ -1,0 +1,93 @@
+
+.kalimba-keys {
+    display: flex;
+    flex-direction: row;
+    align-items: top;
+    justify-content: center;
+}
+
+.key {
+    background-color: #038a58;
+    border: none;
+    width: 40px;
+    height: 200px;
+    border-radius: 4px 4px 20px 20px;
+    border: solid;
+    border-width: 2px;
+    border-color: #038a58;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    /* display: inline-block; */
+    font-size: 16px;
+    font-weight: bold;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    overflow: hidden;
+}
+
+
+/* .key:hover {
+    animation: shake2 1s;
+    transform: translate3d(0, 0, 0);
+    perspective: 1000px;
+} */
+.key-click {
+    animation: shake2 1s;
+    transform: translate3d(0, 0, 0);
+    perspective: 1000px;
+}
+
+@keyframes shake2 {
+    /*
+        f(x) = (-0.093*x + 0,0927) * COS(100*x) * 1.2^(-10*x) 
+        https://www.desmos.com/calculator/aorly47ttb 
+    */
+    0% {transform: translate3d(0.093em, 0, 0);}
+    4% {transform: translate3d(-0.085em, 0, 0);}
+    8% {transform: translate3d(0.077em, 0, 0);}
+    12% {transform: translate3d(-0.071em, 0, 0);}
+    16% {transform: translate3d(0.064em, 0, 0);}
+    20% {transform: translate3d(-0.059em, 0, 0);}
+    24% {transform: translate3d(0.053em, 0, 0);}
+    28% {transform: translate3d(-0.048em, 0, 0);}
+    32% {transform: translate3d(0.044em, 0, 0);}
+    36% {transform: translate3d(-0.04em, 0, 0);}
+    40% {transform: translate3d(0.036em, 0, 0);}
+    44% {transform: translate3d(-0.032em, 0, 0);}
+    48% {transform: translate3d(0.029em, 0, 0);}
+    52% {transform: translate3d(-0.026em, 0, 0);}
+    56% {transform: translate3d(0.023em, 0, 0);}
+    60% {transform: translate3d(-0.021em, 0, 0);}
+    64% {transform: translate3d(0.018em, 0, 0);}
+    68% {transform: translate3d(-0.016em, 0, 0);}
+    72% {transform: translate3d(0.014em, 0, 0);}
+    76% {transform: translate3d(-0.013em, 0, 0);}
+    80% {transform: translate3d(0.011em, 0, 0);}
+    84% {transform: translate3d(-0.009em, 0, 0);}
+    88% {transform: translate3d(0.008em, 0, 0);}
+    92% {transform: translate3d(-0.007em, 0, 0);}
+    96% {transform: translate3d(0.006em, 0, 0);}
+    100% {transform: translate3d(-0.005em, 0, 0);}
+}
+
+.note-text {
+    background: linear-gradient(#06ca82, #039761);
+    
+    color: #b5ffff;
+    font-size: large;
+    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-radius: 4px 4px 4px 4px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 50px;
+    white-space: pre-wrap;
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=480, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,target-densitydpi=device-dpi, user-scalable=no" />
+    <!-- Загрузка JQuery с CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Загрузка SoundFontPlayer.js с CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
+    <!-- Загрузка Pico.css с CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+
+    <!-- Загрузка стилей для кнопки переключения темы -->
+    <link rel="stylesheet" href="/css/pico-theme-switcher.css">
+
+    <!-- Загрузка стилей для калимбы -->
+    <link rel="stylesheet" href="/css/kalimba.css">
+
+    <style>
+        html {
+            /* Отключает двойной тап по экрану */
+            touch-action: manipulation;
+        }
+    </style>
+    <title>Kalimba Online</title>
+</head>
+
+<body>
+    <main class="container">
+    
+        <article>
+            <header>
+                <hgroup>
+                    <h1>Kalimba Online</h1>
+                    <p>It is a creative platform where you can effortlessly and enjoyably play the kalimba directly in your
+                        browser.</p>
+                </hgroup>
+            </header>
+    
+            <div class="kalimba-keys"></div>
+    
+            <footer>
+                <hgroup>
+                    <h3>Kalimba options</h3>
+    
+                    <label for="range-keys"> Keys: <span id="range-keys-value">17</span>
+                        <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
+                    </label>
+
+                    <fieldset id="arrangement-radio-list">
+                        <legend>Arrangement</legend>
+                        <label for="Ascending">
+                            <input type="radio" id="Ascending" name="size" value="Ascending">
+                            Ascending
+                        </label>
+                        <label for="Alternating">
+                            <input type="radio" id="Alternating" name="size" value="Alternating" checked>
+                            Alternating
+                        </label>
+                        <label for="Descending">
+                            <input type="radio" id="Descending" name="size" value="Descending">
+                            Descending
+                        </label>
+                    </fieldset>
+
+                </hgroup>
+            </footer>
+        </article>
+        <footer>
+            <hr />
+            <p>
+                <small>
+                    Built with <a href="https://picocss.com">Pico</a> •
+                    <a href="https://github.com/picocss/examples/blob/master/v1-basic-template/">Source code</a>
+                </small>
+            </p>
+        </footer>
+    </main>
+
+    <button class="contrast switcher theme-switcher" aria-label="Turn on dark mode"><i>Turn on dark mode</i></button>
+
+    <script src="/js/pico-theme-switcher.js"></script>
+    <script src="/js/kalimba.js"></script>
+
+</body>
+
+</html>
