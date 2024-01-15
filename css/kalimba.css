@@ -1,4 +1,3 @@
-
 .kalimba-keys {
     display: flex;
     flex-direction: row;
@@ -7,15 +6,15 @@
 }
 
 .key {
-    background-color: #038a58;
+    /* background-color: #038a58; */
     border: none;
     width: 40px;
     height: 200px;
     border-radius: 4px 4px 20px 20px;
     border: solid;
     border-width: 2px;
-    border-color: #038a58;
-    margin: 5px;
+    /* border-color: #038a58; */
+    margin: 2px;
     text-align: center;
     text-decoration: none;
     /* display: inline-block; */
@@ -29,12 +28,42 @@
     overflow: hidden;
 }
 
+.key {
+    --primary-bg: color-mix(in hsl, var(--primary), #000000 3%);
+    border-color: var(--primary-bg);
+    background-color: var(--primary-bg);
+}
 
-/* .key:hover {
-    animation: shake2 1s;
-    transform: translate3d(0, 0, 0);
-    perspective: 1000px;
-} */
+@media  (min-width: 768px) {
+    .key {
+        margin: 5px;
+    }
+}
+
+.note-text {
+    /* background: linear-gradient(#06ca82, #039761); */
+    
+    /* color: #b5ffff; */
+    font-size: large;
+    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-radius: 4px 4px 4px 4px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 50px;
+    white-space: pre-wrap;
+}
+
+.note-text {
+    --primary-gradient: color-mix(in hsl, var(--primary), #ffffff 10%);
+    background: linear-gradient(var(--primary), var(--primary-gradient));
+    color: var(--primary-inverse);
+}
+
 .key-click {
     animation: shake2 1s;
     transform: translate3d(0, 0, 0);
@@ -72,22 +101,4 @@
     92% {transform: translate3d(-0.007em, 0, 0);}
     96% {transform: translate3d(0.006em, 0, 0);}
     100% {transform: translate3d(-0.005em, 0, 0);}
-}
-
-.note-text {
-    background: linear-gradient(#06ca82, #039761);
-    
-    color: #b5ffff;
-    font-size: large;
-    
-    width: 100%;
-    height: 100%;
-    display: flex;
-    border-radius: 4px 4px 4px 4px;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    padding-bottom: 10px;
-    margin-bottom: 50px;
-    white-space: pre-wrap;
 }

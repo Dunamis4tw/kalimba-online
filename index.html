@@ -27,14 +27,433 @@
             /* Отключает двойной тап по экрану */
             touch-action: manipulation;
         }
+        /* article {
+    margin-bottom: 0px;
+        } */
+
+#customization figure {
+    display: grid;
+    grid-template-rows: repeat(2,1fr);
+    grid-template-columns: repeat(9,1fr);
+    margin-bottom: 0;
+    overflow: hidden
+}
+
+@media (min-width: 576px) {
+    #customization figure {
+        grid-template-rows:1fr;
+        grid-template-columns: repeat(18,1fr);
+        border-radius: var(--border-radius);
+    }
+}
+
+#customization figure~article {
+    margin-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
+}
+
+#customization figure button {
+    margin-bottom: 0;
+    padding: 0;
+    padding-top: 100%;
+    border: none;
+    border-radius: 0
+}
+
+#customization figure button:focus {
+    box-shadow: none
+}
+
+#customization figure button.picked {
+    background-image: var(--icon-check);
+    background-position: center;
+    background-size: .66rem auto;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 1rem 0 rgba(0,0,0,.25)
+}
+
+#customization figure button[data-color=amber].picked,#customization figure button[data-color=lime].picked,#customization figure button[data-color=yellow].picked {
+    background-image: var(--icon-check-dark)
+}
+
+#customization h4 {
+    transition: color var(--transition)
+}
+
+#customization pre[data-theme=generated] {
+    border-color: var(--primary)
+}
     </style>
+
+    <style title="color-picker">
+        button[data-color="red"] {
+            background-color: #e53935;
+        }
+    
+        [data-theme="light"] button[data-color="red"]:hover,
+        [data-theme="light"] button[data-color="red"]:active,
+        [data-theme="light"] button[data-color="red"]:focus {
+            background-color: #d32f2f;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="red"]:hover,
+        [data-theme="dark"] button[data-color="red"]:active,
+        [data-theme="dark"] button[data-color="red"]:focus {
+            background-color: #f44336;
+        }
+    
+        button[data-color="pink"] {
+            background-color: #d81b60;
+        }
+    
+        [data-theme="light"] button[data-color="pink"]:hover,
+        [data-theme="light"] button[data-color="pink"]:active,
+        [data-theme="light"] button[data-color="pink"]:focus {
+            background-color: #c2185b;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="pink"]:hover,
+        [data-theme="dark"] button[data-color="pink"]:active,
+        [data-theme="dark"] button[data-color="pink"]:focus {
+            background-color: #e91e63;
+        }
+    
+        button[data-color="purple"] {
+            background-color: #8e24aa;
+        }
+    
+        [data-theme="light"] button[data-color="purple"]:hover,
+        [data-theme="light"] button[data-color="purple"]:active,
+        [data-theme="light"] button[data-color="purple"]:focus {
+            background-color: #7b1fa2;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="purple"]:hover,
+        [data-theme="dark"] button[data-color="purple"]:active,
+        [data-theme="dark"] button[data-color="purple"]:focus {
+            background-color: #9c27b0;
+        }
+    
+        button[data-color="deep-purple"] {
+            background-color: #5e35b1;
+        }
+    
+        [data-theme="light"] button[data-color="deep-purple"]:hover,
+        [data-theme="light"] button[data-color="deep-purple"]:active,
+        [data-theme="light"] button[data-color="deep-purple"]:focus {
+            background-color: #512da8;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="deep-purple"]:hover,
+        [data-theme="dark"] button[data-color="deep-purple"]:active,
+        [data-theme="dark"] button[data-color="deep-purple"]:focus {
+            background-color: #673ab7;
+        }
+    
+        button[data-color="indigo"] {
+            background-color: #3949ab;
+        }
+    
+        [data-theme="light"] button[data-color="indigo"]:hover,
+        [data-theme="light"] button[data-color="indigo"]:active,
+        [data-theme="light"] button[data-color="indigo"]:focus {
+            background-color: #303f9f;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="indigo"]:hover,
+        [data-theme="dark"] button[data-color="indigo"]:active,
+        [data-theme="dark"] button[data-color="indigo"]:focus {
+            background-color: #3f51b5;
+        }
+    
+        button[data-color="blue"] {
+            background-color: #1e88e5;
+        }
+    
+        [data-theme="light"] button[data-color="blue"]:hover,
+        [data-theme="light"] button[data-color="blue"]:active,
+        [data-theme="light"] button[data-color="blue"]:focus {
+            background-color: #1976d2;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="blue"]:hover,
+        [data-theme="dark"] button[data-color="blue"]:active,
+        [data-theme="dark"] button[data-color="blue"]:focus {
+            background-color: #2196f3;
+        }
+    
+        button[data-color="light-blue"] {
+            background-color: #039be5;
+        }
+    
+        [data-theme="light"] button[data-color="light-blue"]:hover,
+        [data-theme="light"] button[data-color="light-blue"]:active,
+        [data-theme="light"] button[data-color="light-blue"]:focus {
+            background-color: #0288d1;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="light-blue"]:hover,
+        [data-theme="dark"] button[data-color="light-blue"]:active,
+        [data-theme="dark"] button[data-color="light-blue"]:focus {
+            background-color: #03a9f4;
+        }
+    
+        button[data-color="cyan"] {
+            background-color: #00acc1;
+        }
+    
+        [data-theme="light"] button[data-color="cyan"]:hover,
+        [data-theme="light"] button[data-color="cyan"]:active,
+        [data-theme="light"] button[data-color="cyan"]:focus {
+            background-color: #0097a7;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="cyan"]:hover,
+        [data-theme="dark"] button[data-color="cyan"]:active,
+        [data-theme="dark"] button[data-color="cyan"]:focus {
+            background-color: #00bcd4;
+        }
+    
+        button[data-color="teal"] {
+            background-color: #00897b;
+        }
+    
+        [data-theme="light"] button[data-color="teal"]:hover,
+        [data-theme="light"] button[data-color="teal"]:active,
+        [data-theme="light"] button[data-color="teal"]:focus {
+            background-color: #00796b;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="teal"]:hover,
+        [data-theme="dark"] button[data-color="teal"]:active,
+        [data-theme="dark"] button[data-color="teal"]:focus {
+            background-color: #009688;
+        }
+    
+        button[data-color="green"] {
+            background-color: #43a047;
+        }
+    
+        [data-theme="light"] button[data-color="green"]:hover,
+        [data-theme="light"] button[data-color="green"]:active,
+        [data-theme="light"] button[data-color="green"]:focus {
+            background-color: #388e3c;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="green"]:hover,
+        [data-theme="dark"] button[data-color="green"]:active,
+        [data-theme="dark"] button[data-color="green"]:focus {
+            background-color: #4caf50;
+        }
+    
+        button[data-color="light-green"] {
+            background-color: #7cb342;
+        }
+    
+        [data-theme="light"] button[data-color="light-green"]:hover,
+        [data-theme="light"] button[data-color="light-green"]:active,
+        [data-theme="light"] button[data-color="light-green"]:focus {
+            background-color: #689f38;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="light-green"]:hover,
+        [data-theme="dark"] button[data-color="light-green"]:active,
+        [data-theme="dark"] button[data-color="light-green"]:focus {
+            background-color: #8bc34a;
+        }
+    
+        button[data-color="lime"] {
+            background-color: #c0ca33;
+        }
+    
+        [data-theme="light"] button[data-color="lime"]:hover,
+        [data-theme="light"] button[data-color="lime"]:active,
+        [data-theme="light"] button[data-color="lime"]:focus {
+            background-color: #afb42b;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="lime"]:hover,
+        [data-theme="dark"] button[data-color="lime"]:active,
+        [data-theme="dark"] button[data-color="lime"]:focus {
+            background-color: #cddc39;
+        }
+    
+        button[data-color="yellow"] {
+            background-color: #fdd835;
+        }
+    
+        [data-theme="light"] button[data-color="yellow"]:hover,
+        [data-theme="light"] button[data-color="yellow"]:active,
+        [data-theme="light"] button[data-color="yellow"]:focus {
+            background-color: #fbc02d;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="yellow"]:hover,
+        [data-theme="dark"] button[data-color="yellow"]:active,
+        [data-theme="dark"] button[data-color="yellow"]:focus {
+            background-color: #ffeb3b;
+        }
+    
+        button[data-color="amber"] {
+            background-color: #ffb300;
+        }
+    
+        [data-theme="light"] button[data-color="amber"]:hover,
+        [data-theme="light"] button[data-color="amber"]:active,
+        [data-theme="light"] button[data-color="amber"]:focus {
+            background-color: #ffa000;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="amber"]:hover,
+        [data-theme="dark"] button[data-color="amber"]:active,
+        [data-theme="dark"] button[data-color="amber"]:focus {
+            background-color: #ffc107;
+        }
+    
+        button[data-color="orange"] {
+            background-color: #fb8c00;
+        }
+    
+        [data-theme="light"] button[data-color="orange"]:hover,
+        [data-theme="light"] button[data-color="orange"]:active,
+        [data-theme="light"] button[data-color="orange"]:focus {
+            background-color: #f57c00;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="orange"]:hover,
+        [data-theme="dark"] button[data-color="orange"]:active,
+        [data-theme="dark"] button[data-color="orange"]:focus {
+            background-color: #ff9800;
+        }
+    
+        button[data-color="deep-orange"] {
+            background-color: #f4511e;
+        }
+    
+        [data-theme="light"] button[data-color="deep-orange"]:hover,
+        [data-theme="light"] button[data-color="deep-orange"]:active,
+        [data-theme="light"] button[data-color="deep-orange"]:focus {
+            background-color: #e64a19;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="deep-orange"]:hover,
+        [data-theme="dark"] button[data-color="deep-orange"]:active,
+        [data-theme="dark"] button[data-color="deep-orange"]:focus {
+            background-color: #ff5722;
+        }
+    
+        button[data-color="grey"] {
+            background-color: #757575;
+        }
+    
+        [data-theme="light"] button[data-color="grey"]:hover,
+        [data-theme="light"] button[data-color="grey"]:active,
+        [data-theme="light"] button[data-color="grey"]:focus {
+            background-color: #616161;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="grey"]:hover,
+        [data-theme="dark"] button[data-color="grey"]:active,
+        [data-theme="dark"] button[data-color="grey"]:focus {
+            background-color: #9e9e9e;
+        }
+    
+        button[data-color="blue-grey"] {
+            background-color: #546e7a;
+        }
+    
+        [data-theme="light"] button[data-color="blue-grey"]:hover,
+        [data-theme="light"] button[data-color="blue-grey"]:active,
+        [data-theme="light"] button[data-color="blue-grey"]:focus {
+            background-color: #455a64;
+    
+    
+        }
+    
+        [data-theme="dark"] button[data-color="blue-grey"]:hover,
+        [data-theme="dark"] button[data-color="blue-grey"]:active,
+        [data-theme="dark"] button[data-color="blue-grey"]:focus {
+            background-color: #607d8b;
+        }
+    
+        [data-theme="generated"] {
+            --h4-color: #d32f2f;
+            --primary: #e53935;
+            --primary-hover: #d32f2f;
+            --primary-focus: rgba(229, 57, 53, 0.125);
+            --primary-inverse: #FFF;
+        }
+    
+        @media only screen and (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) [data-theme="generated"] {
+                --h4-color: #ef5350;
+                --primary: #e53935;
+                --primary-hover: #f44336;
+                --primary-focus: rgba(229, 57, 53, 0.25);
+                --primary-inverse: #FFF;
+            }
+        }
+    
+        [data-theme="dark"] [data-theme="generated"] {
+            --h4-color: #f44336;
+            --primary: #e53935;
+            --primary-hover: #f44336;
+            --primary-focus: rgba(229, 57, 53, 0.25);
+            --primary-inverse: #FFF;
+        }
+    
+        [data-theme="generated"] {
+            --form-element-active-border-color: var(--primary);
+            --form-element-focus-color: var(--primary-focus);
+            --switch-color: var(--primary-inverse);
+            --switch-checked-background-color: var(--primary);
+        }
+    </style>
+
+
+
     <title>Kalimba Online</title>
 </head>
 
 <body>
     <main class="container">
     
-        <article>
+        <article data-theme="generated">
             <header>
                 <hgroup>
                     <h1>Kalimba Online</h1>
@@ -68,9 +487,14 @@
                             Descending
                         </label>
                     </fieldset>
+                    
+        <div id="customization">
+            <legend>Color:</legend>
+        </div>
 
                 </hgroup>
             </footer>
+            
         </article>
         <footer>
             <hr />
@@ -90,6 +514,7 @@
     <script src="/js/pico-theme-switcher.js"></script>
     <!-- Скрипт создания Калимбы -->
     <script src="/js/kalimba.js"></script>
+    <script src="js/customization.min.js"></script>
 
 </body>
 
