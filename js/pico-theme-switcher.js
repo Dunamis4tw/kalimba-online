@@ -1,6 +1,6 @@
 /* Код кнопки смены полностью взят с оф. сайта */
 "use strict";
-!function() {
+!function () {
     var e = {
         _scheme: "auto",
         change: {
@@ -10,78 +10,49 @@
         buttonsTarget: ".theme-switcher",
         localStorageKey: "picoPreferredColorScheme",
         init() {
-            this.scheme = this.schemeFromLocalStorage,
-            this.initSwitchers()
+            this.scheme = this.schemeFromLocalStorage;
+            this.initSwitchers();
         },
         get schemeFromLocalStorage() {
-            return void 0 !== window.localStorage && null !== window.localStorage.getItem(this.localStorageKey) ? window.localStorage.getItem(this.localStorageKey) : this._scheme
+            return window.localStorage && null !== window.localStorage.getItem(this.localStorageKey) ? window.localStorage.getItem(this.localStorageKey) : this._scheme;
         },
         get preferredColorScheme() {
-            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         },
         initSwitchers() {
-            document.querySelectorAll(this.buttonsTarget).forEach(e=>{
-                e.addEventListener("click", ()=>{
-                    "dark" == this.scheme ? this.scheme = "light" : this.scheme = "dark"
-                }
-                , !1)
-            }
-            )
+            $(this.buttonsTarget).on("click", function () {
+                e.scheme = e.scheme === "dark" ? "light" : "dark";
+            });
         },
-        addButton(e) {
-            var t = document.createElement(e.tag);
-            t.className = e.class,
-            document.querySelector(e.target).appendChild(t)
+        addButton(config) {
+            $(config.tag, {
+                class: config.class,
+                text: config.text
+            }).appendTo(config.target);
         },
         set scheme(e) {
-            "auto" == e ? "dark" == this.preferredColorScheme ? this._scheme = "dark" : this._scheme = "light" : "dark" != e && "light" != e || (this._scheme = e),
-            this.applyScheme(),
-            this.schemeToLocalStorage()
+            "auto" == e ? "dark" == this.preferredColorScheme ? this._scheme = "dark" : this._scheme = "light" : "dark" != e && "light" != e || (this._scheme = e);
+            this.applyScheme();
+            this.schemeToLocalStorage();
         },
         get scheme() {
-            return this._scheme
+            return this._scheme;
         },
         applyScheme() {
-            document.querySelector("html").setAttribute("data-theme", this.scheme),
-            document.querySelectorAll(this.buttonsTarget).forEach(e=>{
-                var t = "dark" == this.scheme ? this.change.dark : this.change.light;
-                e.innerHTML = t,
-                e.setAttribute("aria-label", t.replace(/<[^>]*>?/gm, ""))
-            }
-            )
+            $("html").attr("data-theme", this.scheme);
+            $(this.buttonsTarget).each(function () {
+                var buttonText = e.scheme === "dark" ? e.change.dark : e.change.light;
+                $(this).html(buttonText).attr("aria-label", buttonText.replace(/<[^>]*>?/gm, ""));
+            });
         },
         schemeToLocalStorage() {
-            void 0 !== window.localStorage && window.localStorage.setItem(this.localStorageKey, this.scheme)
-        }
-    }
-      , t = {
-        _state: "closed-on-mobile",
-        toggleLink: document.getElementById("toggle-docs-navigation"),
-        nav: document.querySelector("main > aside > nav"),
-        init() {
-            this.onToggleClick()
-        },
-        onToggleClick() {
-            this.toggleLink.addEventListener("click", e=>{
-                e.preventDefault(),
-                "closed-on-mobile" == this.state ? this.state = "open" : this.state = "closed-on-mobile",
-                this.nav.removeAttribute("class"),
-                this.nav.classList.add(this.state)
-            }
-            , !1)
-        },
-        get state() {
-            return this._state
-        },
-        set state(e) {
-            this._state = e
+            window.localStorage && window.localStorage.setItem(this.localStorageKey, this.scheme);
         }
     };
     e.addButton({
-        tag: "BUTTON",
+        tag: "<button>",
         class: "contrast switcher theme-switcher",
         target: "body"
-    }),
-    e.init(),
-    t.init()
+    });
+    e.init();
 }();
