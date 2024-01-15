@@ -164,7 +164,7 @@ $(document).ready(function () {
                 76: 'D5', //l
             };
 
-            if (event.keyCode == 32 && event.target == document.body) {
+            if (event.keyCode == 32) {
                 isSpacePressed = true;
                 event.preventDefault();
                 return;
