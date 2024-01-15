@@ -23,7 +23,7 @@
         [data-theme="light"] button[data-color="${t}"]:hover,
         [data-theme="light"] button[data-color="${t}"]:active,
         [data-theme="light"] button[data-color="${t}"]:focus {
-          background-color: ${this.colors[t][700]}; '
+          background-color: ${this.colors[t][700]};
         }
         [data-theme="dark"] button[data-color="${t}"]:hover,
         [data-theme="dark"] button[data-color="${t}"]:active,

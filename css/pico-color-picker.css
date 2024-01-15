@@ -1,0 +1,54 @@
+
+#customization figure {
+    display: grid;
+    grid-template-rows: repeat(2,1fr);
+    grid-template-columns: repeat(9,1fr);
+    margin-bottom: 0;
+    overflow: hidden
+}
+
+@media (min-width: 576px) {
+    #customization figure {
+        grid-template-rows:1fr;
+        grid-template-columns: repeat(18,1fr);
+        border-radius: var(--border-radius);
+    }
+}
+
+#customization figure~article {
+    margin-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0
+}
+
+#customization figure button {
+    margin-bottom: 0;
+    padding: 0;
+    padding-top: 100%;
+    border: none;
+    border-radius: 0
+}
+
+#customization figure button:focus {
+    box-shadow: none
+}
+
+#customization figure button.picked {
+    background-image: var(--icon-check);
+    background-position: center;
+    background-size: .66rem auto;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 1rem 0 rgba(0,0,0,.25)
+}
+
+#customization figure button[data-color=amber].picked,#customization figure button[data-color=lime].picked,#customization figure button[data-color=yellow].picked {
+    background-image: var(--icon-check-dark)
+}
+
+#customization h4 {
+    transition: color var(--transition)
+}
+
+#customization pre[data-theme=generated] {
+    border-color: var(--primary)
+}
