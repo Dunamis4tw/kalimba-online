@@ -24,9 +24,39 @@ $(document).ready(function () {
     // Do#		Re#		Fa	Fa#		Sl#		La#		Do  - Ноты со смещением
 
 
+    // var kalimbaOptions = {
+    //     keysCount: 17,
+    //     selectorKeysRange: '#range-keys',
+    //     selectorKeysRangeValue: '#range-keys-value',
+    //     localStorageKey: "KalimbaKeysCount",
+
+    //     keysCountFromLocalStorage() {
+    //         return window.localStorage && null !== window.localStorage.getItem(this.localStorageKey) ? window.localStorage.getItem(this.localStorageKey) : this.keys;
+    //     },
+    //     keysCountToLocalStorage(e) {
+    //         window.localStorage && window.localStorage.setItem(this.localStorageKey, e);
+    //     },
+    //     init() {
+    //         // Событие при смене количества клавиш
+    //         $(this.selectorKeysRange).change(function() {
+    //             let keys = $(this.selectorKeysRange).val();
+    //             $(this.selectorKeysRangeValue).text(keys);
+    //             let arrangement = $('input:checked','#arrangement-radio-list').attr("id");
+    //             addKeys(getArrayNotesKalimba(keys, arrangement));
+
+    //         });
+    //     },
+    // }
+    // kalimbaOptions.init();
+
+
+
+
+
+
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     // Загружаем звуки калимбы
-    const Kalimba = Soundfont.instrument(audioContext, 'kalimba');
+    const Kalimba = Soundfont.instrument(audioContext, 'kalimba', { gain: 10 });
     const kalimbaKeysContainer = $('.kalimba-keys');
     const allNotes = [                
                                       "A0", "B0",
@@ -140,7 +170,7 @@ $(document).ready(function () {
         keys.each(function () {
             const note = $(this).attr('note');
             $(this).on('mouseover', function (event) {
-                // Если нажата мышь и курсор находится внутри клавиши
+                // Если нажата мышь и курсор находится внутри клавиши (без второй проверки, событие вызывается лишний раз)
                 if (isMouseDown && !$(event.relatedTarget).closest(this).length) {
                     playSound(kalimba, note);
                     keyShake($('.key', this));
@@ -148,7 +178,6 @@ $(document).ready(function () {
             });
             
             $(this).on('click', function () {
-
                 playSound(kalimba, note);
                 keyShake($('.key', this));
             });
@@ -259,25 +288,36 @@ $(document).ready(function () {
     $('input[type=range]').on('input', function () {
         $(this).trigger('change');
     });
+
     
     // Событие при смене количества клавиш
     $('#range-keys').change( function() {
         let keys = $('#range-keys').val();
+        window.localStorage && window.localStorage.setItem("KeysCount", keys);
         $('#range-keys-value').text(keys);
         let arrangement = $('input:checked','#arrangement-radio-list').attr("id");
         addKeys(getArrayNotesKalimba(keys, arrangement));
-
     });
 
     // Событие при смене Arrangement
     $('input', '#arrangement-radio-list').on("click", function () {
         let keys = $('#range-keys').val();
         let arrangement = $('input:checked','#arrangement-radio-list').attr("id");
+        window.localStorage && window.localStorage.setItem("Arrangement", arrangement);
         addKeys(getArrayNotesKalimba(keys, arrangement));
     });
 
-    // Добавляем клавиш
-    addKeys(getArrayNotesKalimba(17, "Alternating"));
+    // Получаем количество клавиш из localStorage и отображаем на странице
+    let keysCount = window.localStorage && null !== window.localStorage.getItem("KeysCount") ? window.localStorage.getItem("KeysCount") : 17;
+    $('#range-keys').val(keysCount);
+    $('#range-keys-value').text(keysCount);
+
+    // Получаем порядок клавиш из localStorage и отображаем на странице
+    let arrangement = window.localStorage && null !== window.localStorage.getItem("Arrangement") ? window.localStorage.getItem("Arrangement") : "Alternating";
+    $("input#" + arrangement).prop('checked', true);
+    
+    // Создаём Калимбу с полученными значениями
+    addKeys(getArrayNotesKalimba(keysCount, arrangement));
 });
 
 // TODO:

@@ -1,56 +1,77 @@
 "use strict";
-! function() {
+! function () {
     var e = {
+        color: "teal",
         colors: null,
         buttonsTarget: '#customization',
         selectorButton: "#customization button[data-color]",
         selectorSection: "#customization",
         buttons: null,
         generatedStyles: null,
+        localStorageKey: "picoColorTheme",
+
+        themeFromLocalStorage() {
+            return window.localStorage && null !== window.localStorage.getItem(this.localStorageKey) ? window.localStorage.getItem(this.localStorageKey) : this.color;
+        },
+        themeToLocalStorage(e) {
+            window.localStorage && window.localStorage.setItem(this.localStorageKey, e);
+        },
         init() {
-            this.generateButtons(),
-                this.setActiveButton("pink"),
-                this.generateTheme("pink")
+            this.generateButtons();
+            this.setActiveButton(this.themeFromLocalStorage());
+            this.generateTheme(this.themeFromLocalStorage());
         },
+
+
         generateButtons() {
-            let e = "",
-                a = "";
-            for (const t in this.colors) e += `<button data-color="${t}" aria-label="Activate ${t} theme"></button>`,
+            let e = "";
+            let a = "";
+            for (const t in this.colors) {
+                e += `<button data-color="${t}" aria-label="Activate ${t} theme"></button>`;
                 a += `
-        button[data-color="${t}"] {
-          background-color: ${this.colors[t][600]};
-        }
-        [data-theme="light"] button[data-color="${t}"]:hover,
-        [data-theme="light"] button[data-color="${t}"]:active,
-        [data-theme="light"] button[data-color="${t}"]:focus {
-          background-color: ${this.colors[t][700]};
-        }
-        [data-theme="dark"] button[data-color="${t}"]:hover,
-        [data-theme="dark"] button[data-color="${t}"]:active,
-        [data-theme="dark"] button[data-color="${t}"]:focus {
-          background-color: ${this.colors[t][500]};
-        }`;
-            var f = document.createElement("FIGURE"),
-                f = (
-                    f.innerHTML = e,
-                    document.querySelector(this.buttonsTarget).append(f),
-                    this.buttons = document.querySelectorAll(this.selectorButton),
-                    this.buttons.forEach(e => {
-                        e.addEventListener("click", e => {
-                            e = e.target.getAttribute("data-color");
-                            this.setActiveButton(e), this.generateTheme(e)
-                        }, !1)
-                    }), document.createElement("STYLE"));
-            f.setAttribute("title", "color-picker"), this.generatedStyles = this.minifyCSS(a), f.innerHTML = this.generatedStyles, document.querySelector("head").appendChild(f)
+                    button[data-color="${t}"] {
+                    background-color: ${this.colors[t][600]};
+                    }
+                    [data-theme="light"] button[data-color="${t}"]:hover,
+                    [data-theme="light"] button[data-color="${t}"]:active,
+                    [data-theme="light"] button[data-color="${t}"]:focus {
+                    background-color: ${this.colors[t][700]};
+                    }
+                    [data-theme="dark"] button[data-color="${t}"]:hover,
+                    [data-theme="dark"] button[data-color="${t}"]:active,
+                    [data-theme="dark"] button[data-color="${t}"]:focus {
+                    background-color: ${this.colors[t][500]};
+                    }`;
+            }
+            var f = document.createElement("FIGURE");
+            f = (
+                f.innerHTML = e,
+                document.querySelector(this.buttonsTarget).append(f),
+                this.buttons = document.querySelectorAll(this.selectorButton),
+                this.buttons.forEach(e => {
+                    e.addEventListener("click", e => {
+                        e = e.target.getAttribute("data-color");
+                        this.setActiveButton(e);
+                        this.generateTheme(e);
+                        this.themeToLocalStorage(e);
+                    }, false)
+                }), document.createElement("STYLE"));
+            f.setAttribute("title", "color-picker");
+            this.generatedStyles = this.minifyCSS(a);
+            f.innerHTML = this.generatedStyles;
+            document.querySelector("head").appendChild(f);
         },
+
         setActiveButton(e) {
             this.buttons.forEach(e => {
-                e.removeAttribute("class")
-            }), document.querySelector(this.selectorButton + '[data-color="' + e + '"]').setAttribute("class", "picked")
+                e.removeAttribute("class");
+            });
+            document.querySelector(this.selectorButton + '[data-color="' + e + '"]').setAttribute("class", "picked");
         },
+
         generateTheme(e) {
-            var a = e,
-                e = this.colors[e];
+            var a = e;
+            var e = this.colors[e];
             let f = {
                 ".name": a.charAt(0).toUpperCase() + a.substring(1) + " ",
                 ".c500": e[500],
@@ -62,50 +83,55 @@
             };
             Object.keys(f).forEach(a => {
                 document.querySelectorAll(this.selectorSection + " " + a).forEach(e => {
-                    e.innerHTML = f[a]
+                    e.innerHTML = f[a];
                 })
             });
             a = `
-    [data-theme="generated"] {
-      --h4-color: ${e[700]};
-      --primary: ${e[600]};
-      --primary-hover: ${e[700]};
-      --primary-focus: ${this.hexToRgbA(e[600], .125)};
-      --primary-inverse: ${e.inverse};
-    }
-    @media only screen and (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) [data-theme="generated"] {
-        --h4-color: ${e[400]};
-        --primary: ${e[600]};
-        --primary-hover: ${e[500]};
-        --primary-focus: ${this.hexToRgbA(e[600], .25)};
-        --primary-inverse: ${e.inverse};
-      }
-    }
-    [data-theme="dark"] [data-theme="generated"] {
-      --h4-color: ${e[500]};
-      --primary: ${e[600]};
-      --primary-hover: ${e[500]};
-      --primary-focus: ${this.hexToRgbA(e[600], .25)};
-      --primary-inverse: ${e.inverse};
-    }
-    [data-theme="generated"] {
-      --form-element-active-border-color: var(--primary);
-      --form-element-focus-color: var(--primary-focus);
-      --switch-color: var(--primary-inverse);
-      --switch-checked-background-color: var(--primary);
-    }`;
-            document.querySelector('style[title="color-picker"]').innerHTML = this.generatedStyles + this.minifyCSS(a)
+                [data-theme="generated"] {
+                --h4-color: ${e[700]};
+                --primary: ${e[600]};
+                --primary-hover: ${e[700]};
+                --primary-focus: ${this.hexToRgbA(e[600], .125)};
+                --primary-inverse: ${e.inverse};
+                }
+                @media only screen and (prefers-color-scheme: dark) {
+                :root:not([data-theme="light"]) [data-theme="generated"] {
+                    --h4-color: ${e[400]};
+                    --primary: ${e[600]};
+                    --primary-hover: ${e[500]};
+                    --primary-focus: ${this.hexToRgbA(e[600], .25)};
+                    --primary-inverse: ${e.inverse};
+                }
+                }
+                [data-theme="dark"] [data-theme="generated"] {
+                --h4-color: ${e[500]};
+                --primary: ${e[600]};
+                --primary-hover: ${e[500]};
+                --primary-focus: ${this.hexToRgbA(e[600], .25)};
+                --primary-inverse: ${e.inverse};
+                }
+                [data-theme="generated"] {
+                --form-element-active-border-color: var(--primary);
+                --form-element-focus-color: var(--primary-focus);
+                --switch-color: var(--primary-inverse);
+                --switch-checked-background-color: var(--primary);
+                }`;
+            document.querySelector('style[title="color-picker"]').innerHTML = this.generatedStyles + this.minifyCSS(a);
         },
+
         minifyCSS(e) {
-            return e.replace(/^ +/gm, "")
+            return e.replace(/^ +/gm, "");
         },
+
         hexToRgbA(e, a) {
             let f;
-            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(e)) return "rgba(" + [(f = "0x" + (f = 3 == (f = e.substring(1).split("")).length ? [f[0], f[0], f[1], f[1], f[2], f[2]] : f).join("")) >> 16 & 255, f >> 8 & 255, 255 & f].join(", ") + ", " + a + ")";
+            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(e)) {
+                return "rgba(" + [(f = "0x" + (f = 3 == (f = e.substring(1).split("")).length ? [f[0], f[0], f[1], f[1], f[2], f[2]] : f).join("")) >> 16 & 255, f >> 8 & 255, 255 & f].join(", ") + ", " + a + ")";
+            }
             throw new Error("Bad Hex")
         }
     };
+
     e.colors = {
         red: {
             50: "#ffebee",
@@ -405,5 +431,7 @@
             900: "#263238",
             inverse: "#FFF"
         }
-    }, e.init()
+    }
+
+    e.init();
 }();
