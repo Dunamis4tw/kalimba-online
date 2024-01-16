@@ -91,6 +91,13 @@ $(document).ready(function () {
             let label = dots + "\n" + labelNum;
 
             // Создаём элемент клавиши указав высоту и ноту
+            const keyZone = $('<div>', {
+                class: 'key-zone',
+                note: note,
+                height: (360 - 5*convertStringToNumber(note)) + "px"
+            });
+
+            // Создаём элемент клавиши указав высоту и ноту
             const keyElement = $('<div>', {
                 class: 'key',
                 note: note,
@@ -104,7 +111,9 @@ $(document).ready(function () {
             }))
 
             // Добавляем созданную клавишу на поле
-            kalimbaKeysContainer.append(keyElement);
+            // kalimbaKeysContainer.append(keyElement);
+            keyZone.append(keyElement);
+            kalimbaKeysContainer.append(keyZone);
         });
 
         // Обновляем события
@@ -126,22 +135,24 @@ $(document).ready(function () {
     
     // Добавляем события на нажатия клавиш
     function attachEventListeners(kalimba) {
-        const keys = $('.key');
+        const keys = $('.key-zone');
 
         keys.each(function () {
             const note = $(this).attr('note');
-            $(this).on('mouseover', function () {
-                if (isMouseDown) {
+            $(this).on('mouseover', function (event) {
+                // Если нажата мышь и курсор находится внутри клавиши
+                if (isMouseDown && !$(event.relatedTarget).closest(this).length) {
                     playSound(kalimba, note);
-                    keyShake($(this));
+                    keyShake($('.key', this));
                 }
             });
+            
             $(this).on('click', function () {
+
                 playSound(kalimba, note);
-                keyShake($(this));
+                keyShake($('.key', this));
             });
         });
-
     }
 
 
@@ -208,7 +219,6 @@ $(document).ready(function () {
     
     // Присваивает события на нажатия когда Калимба загрузится
     Kalimba.then(function (kalimba) {
-        attachEventListeners(kalimba);
         attachKeyboardEventListeners(kalimba);
     });
 
