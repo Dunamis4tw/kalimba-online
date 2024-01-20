@@ -54,12 +54,14 @@
                 <hgroup>
                     <h3>Kalimba options</h3>
             
-                    <label for="range-keys"> Keys: <span id="range-keys-value">17</span>
-                        <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
-                    </label>
+                    <fieldset>
+                        <label for="range-keys"> Keys: <span id="range-keys-value">17</span>
+                            <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
+                        </label>
+                    </fieldset>
             
                     <fieldset id="arrangement-radio-list">
-                        <legend>Arrangement</legend>
+                        <legend>Arrangement:</legend>
                         <label for="Ascending">
                             <input type="radio" id="Ascending" name="size" value="Ascending">
                             Ascending
@@ -72,6 +74,16 @@
                             <input type="radio" id="Descending" name="size" value="Descending">
                             Descending
                         </label>
+                    </fieldset>
+
+                    <fieldset>
+                        <!-- Select -->
+                        <label for="soundfonts">Soundfonts:</label>
+                        <select id="soundfonts" required>
+                            <option value="FluidR3_GM" selected>FluidR3_GM Soundfont</option>
+                            <option value="FatBoy">FatBoy Soundfont</option>
+                            <option value="Keylimba">Keylimba Soundfont</option>
+                        </select>
                     </fieldset>
             
                     <fieldset id="customization">
