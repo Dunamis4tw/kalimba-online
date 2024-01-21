@@ -65,15 +65,18 @@ $(document).ready(function () {
     const Soundfonts = {
         'FluidR3_GM': {
             url: 'https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/kalimba-mp3.js',
-            gain: 8,
+            sourceUrl: 'https://gleitz.github.io/midi-js-soundfonts/',
+            gain: 6,
         },
         'FatBoy': {
             url: 'https://gleitz.github.io/midi-js-soundfonts/FatBoy/kalimba-mp3.js',
-            gain: 8,
+            sourceUrl: 'https://gleitz.github.io/midi-js-soundfonts/',
+            gain: 6,
         },
         'Keylimba': {
             url: '/soundfonts/keylimba/kalimba.mp3.js',
-            gain: 2,
+            sourceUrl: 'https://keylimba.carrd.co/',
+            gain: 1,
         },
     };
 
@@ -129,7 +132,7 @@ $(document).ready(function () {
     function addKeys(notesArray) {
         // Чистим поле
         kalimbaKeysContainer.empty();
-        
+
         // Перебираем массив с клавишами, которые надо добавить на поле
         notesArray.forEach(note => {
 
@@ -145,7 +148,7 @@ $(document).ready(function () {
             // Получаем итоговую метку клавиши
             let label = dots + "\n" + labelNum;
 
-            let heightMultiplier = (27+notesArray.length)- convertStringToNumber(note);
+            let heightMultiplier = (27 + notesArray.length) - convertStringToNumber(note);
             // Создаём элемент клавиши указав высоту и ноту
             const keyZone = $('<div>', {
                 class: 'key-zone',
@@ -201,12 +204,41 @@ $(document).ready(function () {
                 }
             });
 
-            $(this).on('click', function () {
+            $(this).on('mousedown', function () {
+                // Если пользователь с тачскрином, звук воспроизводится в другом событии
+                if (!ifTouchscreen) {
+                    playSound(kalimba, note);
+                    keyShake($('.key', this));
+                }
+            });
+
+            // Маркер, определяющий тачскрин
+            let ifTouchscreen = false;
+
+            this.addEventListener('touchstart', handleTouchStart, { passive: true });
+
+            function handleTouchStart(event) {
+                // Если сработало это событие, значит пользователь с тачскрином
+                ifTouchscreen = true;
+                // Смотрим какое последнее касание экрана было
+                let key = $(event.touches[event.touches.length - 1].target);
+                // Находим родительский элемент, пока у него не будет аттрибута note
+                while (key.attr('note') === undefined) {
+                    key = key.parent();
+                }
+                // Получаем ноту из атрибута и инициируем нажатие клавиши
+                let note = key.attr('note');
                 playSound(kalimba, note);
                 keyShake($('.key', this));
-            });
+
+            }
+
         });
     }
+
+
+
+
 
 
     // Добавляем события на нажатия клавиш через клавиатуру
@@ -339,6 +371,8 @@ $(document).ready(function () {
     });
 
     $('#soundfonts').val(soundfont);
+    $("#soundfonts_source").text(soundfont + " source");
+    $("#soundfonts_source").attr("href", Soundfonts[soundfont].sourceUrl);
 
     // Событие при смене Soundfont
     $('#soundfonts').change(function () {
@@ -346,6 +380,8 @@ $(document).ready(function () {
         console.log('Current Soundfont: ' + soundfont);
         Kalimba = Soundfont.instrument(audioContext, Soundfonts[soundfont].url, { gain: Soundfonts[soundfont].gain });
         addKeys(getArrayNotesKalimba(keysCount, arrangement));
+        $("#soundfonts_source").text(soundfont + " source");
+        $("#soundfonts_source").attr("href", Soundfonts[soundfont].sourceUrl);
 
         window.localStorage && window.localStorage.setItem("soundfont", soundfont);
     });
@@ -354,13 +390,31 @@ $(document).ready(function () {
     addKeys(getArrayNotesKalimba(keysCount, arrangement));
 });
 
-// TODO:
-// ? Добавить возможность работать с сенсора
-// + Добавить всевозможные настройки:
-//   + Количество клавиш
-// + Распределить файлы по папкам css и js
-// - Цвета калимбы под цвет темы
-// - Залить на гитхаб
-// - Громкость звука
-// - Смена нот
-// - 
+/*
+TODO:
+    - Добавить возможность работать с сенсора:
+        + Одновременное нажатие на несколько клавиш
+        - Водить пальцем по экрану
+    - Добавить настройки Калимбы:
+        + Количество клавиш
+        + Различное звучание (soundfonts)
+        + Выбор цвета калимбы и темы всего сайта
+        + Порядок клавиш
+        - Громкость звука
+        - Тюнинг нот
+    - Игра на клавиатуре:
+        + Возможность играть на клавиатуре
+        + Нажатие клавиши с пробелом повышает её звучание на 1 октаву
+        - Различные пресеты управления
+        - Настроить отображение клавиатурных клавиш на клавишах калимбы
+    + Распределить файлы по папкам css и js
+    + Залить на GitHub
+    - Реструктуризировать JS код
+    - Написать readme.md
+
+TODO (в долгосрочной перспективе):
+    - Запись нажимаемых клавиш и воспроизведение
+    - Возможность сохранить записанный трек в файл
+    - Репозиторий треков
+    - Страница, где можно будет научиться играть трек
+ */
