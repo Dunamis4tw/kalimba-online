@@ -83,7 +83,7 @@ $(document).ready(function () {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     // Загружаем звуки калимбы
     let soundfont = window.localStorage && null !== window.localStorage.getItem("soundfont") ? window.localStorage.getItem("soundfont") : "FluidR3_GM";
-    var Kalimba = Soundfont.instrument(audioContext, Soundfonts[soundfont].url, { gain: Soundfonts[soundfont].gain });
+    var KalimbaSF = Soundfont.instrument(audioContext, Soundfonts[soundfont].url, { gain: Soundfonts[soundfont].gain });
     const kalimbaKeysContainer = $('.kalimba-keys');
     const allNotes = [
         "A0", "B0",
@@ -96,6 +96,7 @@ $(document).ready(function () {
         "C7", "D7", "E7", "F7", "G7", "A7", "B7",
         "C8"
     ];
+    var kalimba;
 
 
     // Возвращает массив нот, где keys - количество клавиш, arrangement - порядок
@@ -132,6 +133,8 @@ $(document).ready(function () {
     function addKeys(notesArray) {
         // Чистим поле
         kalimbaKeysContainer.empty();
+        kalimbaKeysContainer.hide();
+        $('#loading').show();
 
         // Перебираем массив с клавишами, которые надо добавить на поле
         notesArray.forEach(note => {
@@ -174,8 +177,11 @@ $(document).ready(function () {
         });
 
         // Обновляем события
-        Kalimba.then(function (kalimba) {
-            attachEventListeners(kalimba);
+        KalimbaSF.then(function (k) {
+            attachEventListeners();
+            kalimba = k;
+            $('#loading').hide();
+            kalimbaKeysContainer.show();
         });
     }
 
@@ -190,61 +196,96 @@ $(document).ready(function () {
         return result;
     }
 
+    // Перменная буфер, хранящая последнюю нажатую тачпадом клавишу
+    var lastTouchKeysPressed=[];
+
+    // Маркер, определяющий тачскрин
+    let ifTouchscreen = false;
+
+    // Обработчик события touchstart
+    function handleTouchStart(event) {
+        // Если сработало это событие, значит пользователь с тачскрином
+        ifTouchscreen = true;
+
+        let note = $(this).attr('note');
+        playSound(kalimba, note);
+        keyShake($('.key', this));
+
+        // Смотрим какое последнее касание экрана было
+        let key = $(event.touches[event.touches.length - 1].target);
+        // Находим родительский элемент, пока у него не будет аттрибута note
+        let i = 0;
+        while (key.attr('note') === undefined && i<2) {
+            key = key.parent();
+            i++;
+        }
+        // Получаем ноту из атрибута и записываем
+        lastTouchKeysPressed[event.touches.length - 1] = key.attr('note');
+
+    }
+
+    // Обработчик события touchmove
+    function handleTouchMove(event) {
+        for (let j = 0; j < event.touches.length; j++) {
+            var touch = event.touches[j]; // Получаем информацию о первом пальце
+            var key = $(document.elementFromPoint(touch.clientX, touch.clientY));
+
+            let i = 0;
+            while (key.attr('note') === undefined && i<2) {
+                key = key.parent();
+                i++;
+                if (i>2) console.log(i);
+            }
+            let note = key.attr('note');
+
+            // if (note !== undefined && lastTouchKeysPressed[event.touches.length-1] != note) {
+                
+            if (note !== undefined && !lastTouchKeysPressed.includes(note)) {
+                lastTouchKeysPressed[j]=note;
+                playSound(kalimba, note);
+                
+            }
+        }
+    }
+
     // Добавляем события на нажатия клавиш
-    function attachEventListeners(kalimba) {
+    function attachEventListeners() {
         const keys = $('.key-zone');
 
         keys.each(function () {
             const note = $(this).attr('note');
+            // Событие наведения мыши на клавишу
             $(this).on('mouseover', function (event) {
                 // Если нажата мышь и курсор находится внутри клавиши (без второй проверки, событие вызывается лишний раз)
                 if (isMouseDown && !$(event.relatedTarget).closest(this).length) {
                     playSound(kalimba, note);
-                    keyShake($('.key', this));
                 }
             });
 
+            // Событие нажатия мыши на клавишу
             $(this).on('mousedown', function () {
                 // Если пользователь с тачскрином, звук воспроизводится в другом событии
                 if (!ifTouchscreen) {
                     playSound(kalimba, note);
-                    keyShake($('.key', this));
                 }
             });
 
-            // Маркер, определяющий тачскрин
-            let ifTouchscreen = false;
-
+            // Событие нажатия пальцем (тачскрин) на клавишу
             this.addEventListener('touchstart', handleTouchStart, { passive: true });
 
-            function handleTouchStart(event) {
-                // Если сработало это событие, значит пользователь с тачскрином
-                ifTouchscreen = true;
-                // Смотрим какое последнее касание экрана было
-                let key = $(event.touches[event.touches.length - 1].target);
-                // Находим родительский элемент, пока у него не будет аттрибута note
-                while (key.attr('note') === undefined) {
-                    key = key.parent();
-                }
-                // Получаем ноту из атрибута и инициируем нажатие клавиши
-                let note = key.attr('note');
-                playSound(kalimba, note);
-                keyShake($('.key', this));
-
-            }
-
+            // Событие наведения пальцем (тачскрин) на клавишу
+            this.addEventListener("touchmove", handleTouchMove);
         });
     }
 
 
 
 
+    let isSpacePressed = false;
 
 
     // Добавляем события на нажатия клавиш через клавиатуру
-    function attachKeyboardEventListeners(kalimba) {
-
-        let isSpacePressed = false;
+    function attachKeyboardEventListeners() {
 
         // Обработчик события keydown
         $(document).on('keydown', function (event) {
@@ -281,8 +322,6 @@ $(document).ready(function () {
                 if (KeyDiv.length) {
                     // Вызов функций воспроизведения звука и анимации клавиши
                     playSound(kalimba, note);
-                    keyShake(KeyDiv);
-
                 }
 
             }
@@ -290,20 +329,17 @@ $(document).ready(function () {
 
         // Обработчик события keyup
         $(document).on('keyup', function (event) {
-            const releasedKey = event.key.toLowerCase();
-
-            // Проверка, отпущен ли пробел
-            if (event.keyCode == 32 && event.target == document.body) {
+            // Если отпущен пробел
+            if (event.keyCode == 32) {
+                // Выключаем маркер
                 isSpacePressed = false;
             }
         });
-
-
     }
 
     // Присваивает события на нажатия когда Калимба загрузится
-    Kalimba.then(function (kalimba) {
-        attachKeyboardEventListeners(kalimba);
+    KalimbaSF.then(function (kalimba) {
+        attachKeyboardEventListeners();
     });
 
     // Иницирует анимацию тряски клавиши
@@ -317,6 +353,7 @@ $(document).ready(function () {
     // Воспроизводит звук
     function playSound(instrument, note) {
         instrument.play(note);
+        keyShake($(`.key-zone[note=${note}] .key`));
         console.log('Pressed \'' + note + '\' (' + convertStringToNumber(note) + ')');
     }
 
@@ -378,7 +415,7 @@ $(document).ready(function () {
     $('#soundfonts').change(function () {
         var soundfont = $(this).val();
         console.log('Current Soundfont: ' + soundfont);
-        Kalimba = Soundfont.instrument(audioContext, Soundfonts[soundfont].url, { gain: Soundfonts[soundfont].gain });
+        KalimbaSF = Soundfont.instrument(audioContext, Soundfonts[soundfont].url, { gain: Soundfonts[soundfont].gain });
         addKeys(getArrayNotesKalimba(keysCount, arrangement));
         $("#soundfonts_source").text(soundfont + " source");
         $("#soundfonts_source").attr("href", Soundfonts[soundfont].sourceUrl);
