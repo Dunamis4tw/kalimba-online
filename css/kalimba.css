@@ -4,6 +4,7 @@
     align-items: top;
     justify-content: center;
     user-select: none;
+    touch-action: none;
 }
 
 .key-zone {
