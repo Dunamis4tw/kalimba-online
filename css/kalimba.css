@@ -1,10 +1,29 @@
+html {
+    /* Отключает двойной тап по экрану */
+    touch-action: manipulation;
+}
+
 .kalimba-keys {
     display: flex;
     flex-direction: row;
     align-items: top;
-    justify-content: center;
     user-select: none;
     touch-action: none;
+}
+
+/* Для телефонов */
+@media (min-width: 0px) {
+    .kalimba-keys {
+        /* Отступы между между клавишами */
+        justify-content: space-evenly;
+    }
+}
+
+/* Для ПК */
+@media  (min-width: 768px) {
+    .kalimba-keys {
+        justify-content: center;
+    }
 }
 
 .key-zone {
@@ -13,22 +32,7 @@
     justify-content: flex-end;
     align-items: center;
     overflow: hidden;
-}
-
-/* Для телефонов */
-@media (min-width: 0px) {
-    .key-zone {
-        width: 40px;
-        padding: 2px;
-    }
-}
-
-/* Для ПК */
-@media  (min-width: 768px) {
-    .key-zone {
-        width: 50px;
-        padding: 5px;
-    }
+    
 }
 
 .key {
@@ -39,26 +43,42 @@
     /* margin: 2px; */
 
     border: none;
-    border-radius: 4px 4px 20px 20px;
     border: solid;
     border-width: 2px;
+    border-radius: 4px 4px 20px 20px;
 
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
     overflow: hidden;
-}
 
-.key {
     --primary-bg: color-mix(in hsl, var(--primary), #000000 3%);
     border-color: var(--primary-bg);
     background-color: var(--primary-bg);
 }
 
+
+
+/* Для телефонов */
+@media (min-width: 0px) {
+    .key {
+        margin: 2px;
+    }
+    .key-zone {
+        width: 50px;
+        padding: 2px;
+    }
+}
+
+/* Для ПК */
 @media  (min-width: 768px) {
     .key {
         margin: 5px;
+    }
+    .key-zone {
+        width: 50px;
+        padding: 5px;
     }
 }
 

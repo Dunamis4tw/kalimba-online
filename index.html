@@ -15,23 +15,19 @@
     <!-- Загрузка стилей для кнопки переключения темы -->
     <link rel="stylesheet" href="/css/pico-theme-switcher.css">
     <link rel="stylesheet" href="/css/pico-color-picker.css">
+    
+    <!-- Код, отвечающий за полный экран -->
+    <script src="/js/fullscreen.js"></script>
+    <link rel="stylesheet" href="/css/fullscreen.css">
 
     <!-- Загрузка стилей для калимбы -->
     <link rel="stylesheet" href="/css/kalimba.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" /> -->
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-    <style>
-        html {
-            /* Отключает двойной тап по экрану */
-            touch-action: manipulation;
-        }
-    </style>
-
-
-
+    <style> </style>
 
     <title>Kalimba Online</title>
 </head>
@@ -39,14 +35,25 @@
 <body>
     <main class="container">
     
-        <article data-theme="generated">
+        <article id="fullscreenDiv" class="fullscreen" data-theme="generated">
             <header>
                 <hgroup>
                     <h1>Kalimba Online</h1>
-                    <p>It is a creative platform where you can effortlessly and enjoyably play the kalimba directly in your
-                        browser.</p>
+                    <p>It is a creative platform where you can effortlessly and
+                        enjoyably play the kalimba directly in your browser.</p>
                 </hgroup>
             </header>
+            <!-- Кнопка "Fullscreen" -->
+            <button id="fullscreenButton" class="fullscreen-button">
+                <svg id="fullscreen-on" viewBox="0 0 24 24">
+                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 
+                    7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                </svg>
+                <svg id="fullscreen-off" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 
+                    11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+                </svg>
+            </button>
             <article id="loading" aria-busy="true"></article>
             <div class="kalimba-keys" style="display: none;"></div>
     
@@ -108,8 +115,8 @@
         </footer>
     </main>
 
-    <a class="github-fork-ribbon" href="https://github.com/Dunamis4tw/kalimba-online" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
-    <style>.github-fork-ribbon:before { background-color: var(--switch-background-color); }</style>
+    <!-- <a class="github-fork-ribbon" href="https://github.com/Dunamis4tw/kalimba-online" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+    <style>.github-fork-ribbon:before { background-color: var(--switch-background-color); }</style> -->
 
     <!-- Кнопка смены темы -->
     <script src="/js/pico-theme-switcher.js"></script>
