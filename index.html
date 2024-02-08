@@ -15,7 +15,7 @@
     <!-- Загрузка стилей для кнопки переключения темы -->
     <link rel="stylesheet" href="/css/pico-theme-switcher.css">
     <link rel="stylesheet" href="/css/pico-color-picker.css">
-    
+
     <!-- Код, отвечающий за полный экран -->
     <script src="/js/fullscreen.js"></script>
     <link rel="stylesheet" href="/css/fullscreen.css">
@@ -34,39 +34,100 @@
 
 <body>
     <main class="container">
-    
-        <article id="fullscreenDiv" class="fullscreen" data-theme="generated">
-            <header>
-                <hgroup>
-                    <h1>Kalimba Online</h1>
-                    <p>It is a creative platform where you can effortlessly and
-                        enjoyably play the kalimba directly in your browser.</p>
-                </hgroup>
-            </header>
-            <!-- Кнопка "Fullscreen" -->
-            <button id="fullscreenButton" class="fullscreen-button">
-                <svg id="fullscreen-on" viewBox="0 0 24 24">
-                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 
-                    7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                </svg>
-                <svg id="fullscreen-off" viewBox="0 0 24 24" style="display: none;">
-                    <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 
-                    11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
-                </svg>
-            </button>
-            <article id="loading" aria-busy="true"></article>
-            <div class="kalimba-keys" style="display: none;"></div>
-    
-            <footer>
-                <hgroup>
-                    <h3>Kalimba options</h3>
-            
+
+        <header class="container">
+            <hgroup>
+                <h1>Kalimba Online</h1>
+                <p>It is a creative platform where you can effortlessly and
+                    enjoyably play the kalimba directly in your browser.</p>
+            </hgroup>
+        </header>
+
+        <main class="container" data-theme="generated">
+
+            <section id="fullscreenDiv">
+                <article class="fullscreen" data-theme="generated">
+                    <!-- Блок с загрузкой -->
+                    <article id="loading" aria-busy="true"></article>
+                    <!-- Блок с клавишами -->
+                    <div class="kalimba-keys" style="display: none;"></div>
+                    <!-- Блок с кнопками -->
+                    <div class="buttons">
+                        <!-- Кнопка "Fullscreen" -->
+                        <button id="fullscreenButton" class="fullscreen-button">
+                            <svg id="fullscreen-on" viewBox="0 0 24 24">
+                                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 
+                                7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                            </svg>
+                            <svg id="fullscreen-off" viewBox="0 0 24 24" style="display: none;">
+                                <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 
+                                11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
+                            </svg>
+                        </button>
+                    </div>
+                </article>
+            </section>
+
+            <section id="options">
+                <article>
+                    <h2>Options</h2>
                     <fieldset>
                         <label for="range-keys"> Keys: <span id="range-keys-value">17</span>
                             <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
                         </label>
                     </fieldset>
-            
+    
+                    <fieldset id="arrangement-radio-list">
+                        <legend>Arrangement:</legend>
+                        <label for="Ascending">
+                            <input type="radio" id="Ascending" name="size" value="Ascending">
+                            Ascending
+                        </label>
+                        <label for="Alternating">
+                            <input type="radio" id="Alternating" name="size" value="Alternating" checked>
+                            Alternating
+                        </label>
+                        <label for="Descending">
+                            <input type="radio" id="Descending" name="size" value="Descending">
+                            Descending
+                        </label>
+                    </fieldset>
+    
+                    <fieldset>
+                        <label for="soundfonts">Soundfonts: <small>[<a id="soundfonts_source" href="#"
+                                    target="_blank">source</a>]</small> </label>
+                        <select id="soundfonts" required>
+                            <option value="FluidR3_GM" selected>FluidR3_GM Soundfont</option>
+                            <option value="FatBoy">FatBoy Soundfont</option>
+                            <option value="Keylimba">Keylimba Soundfont</option>
+                        </select>
+                    </fieldset>
+    
+                    <fieldset id="customization">
+                        <style title="color-picker"></style>
+                        <legend>Color:</legend>
+                    </fieldset>
+                </article>
+
+                
+            </section>
+
+
+        </main>
+
+
+        <!-- <article class="fullscreen" data-theme="generated">
+
+            <footer>
+                <hgroup>
+                    <h3>Kalimba options</h3>
+
+                    <fieldset>
+                        <label for="range-keys"> Keys: <span id="range-keys-value">17</span>
+                            <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
+                        </label>
+                    </fieldset>
+
                     <fieldset id="arrangement-radio-list">
                         <legend>Arrangement:</legend>
                         <label for="Ascending">
@@ -84,23 +145,26 @@
                     </fieldset>
 
                     <fieldset>
-                        <label for="soundfonts">Soundfonts: <small>[<a id="soundfonts_source" href="#" target="_blank">source</a>]</small> </label> 
+                        <label for="soundfonts">Soundfonts: <small>[<a id="soundfonts_source" href="#"
+                                    target="_blank">source</a>]</small> </label>
                         <select id="soundfonts" required>
                             <option value="FluidR3_GM" selected>FluidR3_GM Soundfont</option>
                             <option value="FatBoy">FatBoy Soundfont</option>
                             <option value="Keylimba">Keylimba Soundfont</option>
                         </select>
                     </fieldset>
-            
+
                     <fieldset id="customization">
                         <style title="color-picker"></style>
                         <legend>Color:</legend>
                     </fieldset>
-            
+
                 </hgroup>
             </footer>
-            
-        </article>
+
+        </article> -->
+
+
         <footer>
             <hr />
             <p>
