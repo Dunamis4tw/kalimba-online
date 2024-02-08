@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
     <!-- Загрузка Pico.css с CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    
 
     <!-- Загрузка стилей для кнопки переключения темы -->
     <link rel="stylesheet" href="/css/pico-theme-switcher.css">
@@ -29,7 +30,7 @@
 
     <style> </style>
 
-    <title>Kalimba Online</title>
+    <title data-i18n="title">Kalimba Online</title>
 </head>
 
 <body>
@@ -37,8 +38,8 @@
 
         <header class="container">
             <hgroup>
-                <h1>Kalimba Online</h1>
-                <p>It is a creative platform where you can effortlessly and
+                <h1 data-i18n="title">Kalimba Online</h1>
+                <p data-i18n="description">It is a creative platform where you can effortlessly and
                     enjoyably play the kalimba directly in your browser.</p>
             </hgroup>
         </header>
@@ -70,123 +71,93 @@
 
             <section id="options">
                 <article>
-                    <h2>Options</h2>
+                    <h2 data-i18n="option.title">Options</h2>
                     <fieldset>
-                        <label for="range-keys"> Keys: <span id="range-keys-value">17</span>
+                        <label for="range-keys"><span data-i18n="option.keys"> Keys: </span><span id="range-keys-value">17</span>
                             <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
                         </label>
                     </fieldset>
     
                     <fieldset id="arrangement-radio-list">
-                        <legend>Arrangement:</legend>
+                        <legend data-i18n="option.arrangement">Arrangement:</legend>
                         <label for="Ascending">
                             <input type="radio" id="Ascending" name="size" value="Ascending">
-                            Ascending
+                            <span data-i18n="option.ascending">Ascending</span>
                         </label>
                         <label for="Alternating">
                             <input type="radio" id="Alternating" name="size" value="Alternating" checked>
-                            Alternating
+                            <span data-i18n="option.alternating">Alternating</span>
                         </label>
                         <label for="Descending">
                             <input type="radio" id="Descending" name="size" value="Descending">
-                            Descending
+                            <span data-i18n="option.descending">Descending</span>
                         </label>
                     </fieldset>
     
                     <fieldset>
-                        <label for="soundfonts">Soundfonts: <small>[<a id="soundfonts_source" href="#"
-                                    target="_blank">source</a>]</small> </label>
+                        <label for="soundfonts">
+                            <span data-i18n="option.soundfonts">Soundfonts</span>
+                            <small>
+                                (<a id="soundfonts_source" data-i18n="option.source" href="#" target="_blank">source</a>)
+                            </small>:
+                        </label>
                         <select id="soundfonts" required>
-                            <option value="FluidR3_GM" selected>FluidR3_GM Soundfont</option>
-                            <option value="FatBoy">FatBoy Soundfont</option>
-                            <option value="Keylimba">Keylimba Soundfont</option>
+                            <option value="FluidR3_GM" selected>FluidR3_GM</option>
+                            <option value="FatBoy">FatBoy</option>
+                            <option value="Keylimba">Keylimba</option>
+                        </select>
+                    </fieldset>
+
+                    
+                    <fieldset>
+                        <label for="localization" data-i18n="option.localization">
+                            Localization:
+                        </label>
+                        <select id="localization" required>
+                            <option value="ru" selected>ru</option>
+                            <option value="en">en</option>
                         </select>
                     </fieldset>
     
                     <fieldset id="customization">
                         <style title="color-picker"></style>
-                        <legend>Color:</legend>
+                        <legend data-i18n="option.color">Color:</legend>
                     </fieldset>
                 </article>
-
-                
             </section>
 
-
         </main>
-
-
-        <!-- <article class="fullscreen" data-theme="generated">
-
-            <footer>
-                <hgroup>
-                    <h3>Kalimba options</h3>
-
-                    <fieldset>
-                        <label for="range-keys"> Keys: <span id="range-keys-value">17</span>
-                            <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
-                        </label>
-                    </fieldset>
-
-                    <fieldset id="arrangement-radio-list">
-                        <legend>Arrangement:</legend>
-                        <label for="Ascending">
-                            <input type="radio" id="Ascending" name="size" value="Ascending">
-                            Ascending
-                        </label>
-                        <label for="Alternating">
-                            <input type="radio" id="Alternating" name="size" value="Alternating" checked>
-                            Alternating
-                        </label>
-                        <label for="Descending">
-                            <input type="radio" id="Descending" name="size" value="Descending">
-                            Descending
-                        </label>
-                    </fieldset>
-
-                    <fieldset>
-                        <label for="soundfonts">Soundfonts: <small>[<a id="soundfonts_source" href="#"
-                                    target="_blank">source</a>]</small> </label>
-                        <select id="soundfonts" required>
-                            <option value="FluidR3_GM" selected>FluidR3_GM Soundfont</option>
-                            <option value="FatBoy">FatBoy Soundfont</option>
-                            <option value="Keylimba">Keylimba Soundfont</option>
-                        </select>
-                    </fieldset>
-
-                    <fieldset id="customization">
-                        <style title="color-picker"></style>
-                        <legend>Color:</legend>
-                    </fieldset>
-
-                </hgroup>
-            </footer>
-
-        </article> -->
 
 
         <footer>
             <hr />
             <p>
                 <small>
-                    Built with <a href="https://picocss.com">Pico</a> •
-                    <a href="https://github.com/picocss/examples/blob/master/v1-basic-template/">Source code</a>
+                    <span data-i18n="footer.builtwith">Built with</span> <a href="https://picocss.com" target="_blank">Pico</a> •
+                    <a href="https://github.com/Dunamis4tw/kalimba-online" target="_blank" data-i18n="footer.sourcecode">Source code</a>
                 </small>
                 <small style="float: right;">
-                    Hosted by <a href="https://pages.github.com">GitHub Pages</a>
+                    <span data-i18n="footer.hostedby">Hosted by</span> <a href="https://pages.github.com" target="_blank">GitHub Pages</a>
                 </small>
             </p>
         </footer>
     </main>
 
-    <!-- <a class="github-fork-ribbon" href="https://github.com/Dunamis4tw/kalimba-online" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+    <!-- <a class="github-fork-ribbon" href="https://github.com/Dunamis4tw/kalimba-online" target="_blank" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
     <style>.github-fork-ribbon:before { background-color: var(--switch-background-color); }</style> -->
 
-    <!-- Кнопка смены темы -->
+    <!-- Скрипт смены темы -->
+    <button class="contrast switcher theme-switcher"><i data-i18n="theme.darkmode.on" theme="dark">Turn on dark mode</i><!-- нужно, чтобы span не ставл пробел
+         --><i data-i18n="theme.darkmode.off" theme="light">Turn off dark mode</i></button>
     <script src="/js/pico-theme-switcher.js"></script>
+    
+    <!-- Скрипт смены цвета темы -->
     <script src="/js/pico-color-picker.js"></script>
     <!-- Скрипт создания Калимбы -->
     <script src="/js/kalimba.js"></script>
+
+    <!-- Скрипт локализации -->
+    <script src="/js/lang.js"></script>
 
     <!-- Скрипт, добавляющий кнопку консоли на сайте для отладки на телефонах -->
     <!-- <script src="//cdn.jsdelivr.net/npm/eruda"></script>

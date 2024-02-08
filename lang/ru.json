@@ -1,0 +1,19 @@
+{
+    "title": "Онлайн-калимба",
+    "description": "Это креативная платформа, где вы можете легко и с удовольствием играть на калимбе прямо в своем браузере.",
+    "option.title": "Настройки",
+    "option.keys": "Клавиш: ",
+    "option.arrangement": "Порядок клавиш:",
+    "option.ascending": "По возрастанию",
+    "option.alternating": "Чередование",
+    "option.descending": "По убыванию",
+    "option.soundfonts": "Набор звуков",
+    "option.localization": "Локализация:",
+    "option.source": "источник",
+    "option.color": "Цвет:",
+    "footer.builtwith": "Создано с помощью",
+    "footer.sourcecode": "Исходный код",
+    "footer.hostedby": "Хостинг от",
+    "theme.darkmode.on": "Включить тёмный режим",
+    "theme.darkmode.off": "Отключить тёмный режим"
+}

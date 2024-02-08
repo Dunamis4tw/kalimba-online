@@ -3,10 +3,6 @@
 !function () {
     var e = {
         _scheme: "auto",
-        change: {
-            light: "<i>Turn on dark mode</i>",
-            dark: "<i>Turn off dark mode</i>"
-        },
         buttonsTarget: ".theme-switcher",
         localStorageKey: "picoPreferredColorScheme",
         init() {
@@ -40,19 +36,18 @@
         },
         applyScheme() {
             $("html").attr("data-theme", this.scheme);
-            $(this.buttonsTarget).each(function () {
-                var buttonText = e.scheme === "dark" ? e.change.dark : e.change.light;
-                $(this).html(buttonText).attr("aria-label", buttonText.replace(/<[^>]*>?/gm, ""));
-            });
+            let darkmode = e.scheme === "dark";
+            if (darkmode) {
+                $('[theme=light]', this.buttonsTarget).show();
+                $('[theme=dark]', this.buttonsTarget).hide();
+            } else {
+                $('[theme=light]', this.buttonsTarget).hide();
+                $('[theme=dark]', this.buttonsTarget).show();
+            }
         },
         schemeToLocalStorage() {
             window.localStorage && window.localStorage.setItem(this.localStorageKey, this.scheme);
         }
     };
-    e.addButton({
-        tag: "<button>",
-        class: "contrast switcher theme-switcher",
-        target: "body"
-    });
     e.init();
 }();

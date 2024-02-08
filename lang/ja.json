@@ -1,0 +1,19 @@
+{
+    "title": "オンラインカリンバ",
+    "description": "これは、ブラウザで直接カリンバを楽しんで演奏できるクリエイティブなプラットフォームです。",
+    "option.title": "オプション",
+    "option.keys": "キー：",
+    "option.arrangement": "配置：",
+    "option.ascending": "昇順",
+    "option.alternating": "交互",
+    "option.descending": "降順",
+    "option.soundfonts": "サウンドフォント",
+    "option.localization": "ローカリゼーション：",
+    "option.source": "ソース",
+    "option.color": "色",
+    "footer.builtwith": "で構築",
+    "footer.sourcecode": "ソースコード",
+    "footer.hostedby": "ホスト",
+    "theme.darkmode.on": "ダークモードをオンにする",
+    "theme.darkmode.off": "ダークモードをオフにする"
+}

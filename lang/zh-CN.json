@@ -1,0 +1,19 @@
+{
+    "title": "卡琳巴在线",
+    "description": "这是一个创意平台，您可以在浏览器中轻松愉快地直接演奏卡琳巴。",
+    "option.title": "选项",
+    "option.keys": "键：",
+    "option.arrangement": "排列：",
+    "option.ascending": "升序",
+    "option.alternating": "交替",
+    "option.descending": "降序",
+    "option.soundfonts": "音色字体",
+    "option.localization": "本地化：",
+    "option.source": "来源",
+    "option.color": "颜色",
+    "footer.builtwith": "使用 Pico 构建",
+    "footer.sourcecode": "源代码",
+    "footer.hostedby": "主办",
+    "theme.darkmode.on": "启用深色模式",
+    "theme.darkmode.off": "关闭深色模式"
+}

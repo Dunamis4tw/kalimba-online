@@ -1,0 +1,19 @@
+{
+    "title": "Kalimba Online",
+    "description": "Es ist eine kreative Plattform, auf der Sie mühelos und genussvoll direkt in Ihrem Browser Kalimba spielen können.",
+    "option.title": "Optionen",
+    "option.keys": "Tasten: ",
+    "option.arrangement": "Anordnung:",
+    "option.ascending": "Aufsteigend",
+    "option.alternating": "Abwechselnd",
+    "option.descending": "Absteigend",
+    "option.soundfonts": "Klangfonts",
+    "option.localization": "Lokalisierung:",
+    "option.source": "Quelle",
+    "option.color": "Farbe:",
+    "footer.builtwith": "Erstellt mit",
+    "footer.sourcecode": "Quellcode",
+    "footer.hostedby": "Gehostet von",
+    "theme.darkmode.on": "Dunklen Modus einschalten",
+    "theme.darkmode.off": "Dunklen Modus ausschalten"
+    }

@@ -408,7 +408,7 @@ $(document).ready(function () {
     });
 
     $('#soundfonts').val(soundfont);
-    $("#soundfonts_source").text(soundfont + " source");
+    // $("#soundfonts_source").text(soundfont + " source");
     $("#soundfonts_source").attr("href", Soundfonts[soundfont].sourceUrl);
 
     // Событие при смене Soundfont
@@ -417,7 +417,7 @@ $(document).ready(function () {
         console.log('Current Soundfont: ' + soundfont);
         KalimbaSF = Soundfont.instrument(audioContext, Soundfonts[soundfont].url, { gain: Soundfonts[soundfont].gain });
         addKeys(getArrayNotesKalimba(keysCount, arrangement));
-        $("#soundfonts_source").text(soundfont + " source");
+        // $("#soundfonts_source").text(soundfont + " source");
         $("#soundfonts_source").attr("href", Soundfonts[soundfont].sourceUrl);
 
         window.localStorage && window.localStorage.setItem("soundfont", soundfont);
@@ -450,7 +450,7 @@ TODO:
     - Реструктуризировать JS код
     - Написать readme.md
     + Сделать кнопку "Во весь экран"
-    - Перевод на разные языки
+    + Перевод на разные языки
 
 TODO (в долгосрочной перспективе):
     - Запись нажимаемых клавиш и воспроизведение

@@ -1,0 +1,19 @@
+{
+    "title": "كاليمبا على الإنترنت",
+    "description": "إنها منصة إبداعية يمكنك من خلالها اللعب بسهولة ومتعة مع كاليمبا مباشرة في متصفحك.",
+    "option.title": "الخيارات",
+    "option.keys": "المفاتيح: ",
+    "option.arrangement": "ترتيب:",
+    "option.ascending": "تصاعدي",
+    "option.alternating": "متناوب",
+    "option.descending": "تنازلي",
+    "option.soundfonts": "خطوط الصوت",
+    "option.localization": "التوطين:",
+    "option.source": "مصدر",
+    "option.color": "لون",
+    "footer.builtwith": "بنيت بواسطة",
+    "footer.sourcecode": "شفرة المصدر",
+    "footer.hostedby": "استضاف من قبل",
+    "theme.darkmode.on": "تشغيل وضع الظلام",
+    "theme.darkmode.off": "إيقاف وضع الظلام"
+}

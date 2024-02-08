@@ -1,0 +1,19 @@
+{
+    "title": "Kalimba en línea",
+    "description": "Es una plataforma creativa donde puedes tocar la kalimba de forma fácil y placentera directamente en tu navegador.",
+    "option.title": "Opciones",
+    "option.keys": "Teclas: ",
+    "option.arrangement": "Disposición:",
+    "option.ascending": "Ascendente",
+    "option.alternating": "Alternante",
+    "option.descending": "Descendente",
+    "option.soundfonts": "Fuentes de sonido",
+    "option.localization": "Localización:",
+    "option.source": "fuente",
+    "option.color": "Color",
+    "footer.builtwith": "Creado con",
+    "footer.sourcecode": "Código fuente",
+    "footer.hostedby": "Hospedado por",
+    "theme.darkmode.on": "Activar modo oscuro",
+    "theme.darkmode.off": "Desactivar modo oscuro"
+}
