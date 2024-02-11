@@ -7,6 +7,7 @@
     "option.ascending": "升序",
     "option.alternating": "交替",
     "option.descending": "降序",
+    "option.labeltype": "标签类型：",
     "option.soundfonts": "音色字体",
     "option.localization": "本地化：",
     "option.source": "来源",

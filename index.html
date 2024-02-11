@@ -86,17 +86,35 @@
                     <fieldset id="arrangement-radio-list">
                         <legend data-i18n="option.arrangement">Arrangement:</legend>
                         <label for="Ascending">
-                            <input type="radio" id="Ascending" name="size" value="Ascending">
+                            <input type="radio" id="Ascending" name="arrangement" value="Ascending">
                             <span data-i18n="option.ascending">Ascending</span>
                         </label>
                         <label for="Alternating">
-                            <input type="radio" id="Alternating" name="size" value="Alternating" checked>
+                            <input type="radio" id="Alternating" name="arrangement" value="Alternating" checked>
                             <span data-i18n="option.alternating">Alternating</span>
                         </label>
                         <label for="Descending">
-                            <input type="radio" id="Descending" name="size" value="Descending">
+                            <input type="radio" id="Descending" name="arrangement" value="Descending">
                             <span data-i18n="option.descending">Descending</span>
                         </label>
+                    </fieldset>
+                    
+                    <fieldset id="labeltype-radio-list">
+                        <legend data-i18n="option.labeltype">Label type:</legend>
+                        <div style="display: flex;">
+                            <label for="Number" style="padding-right: 1em;">
+                                <input type="radio" id="Number" name="labeltype" value="Number" checked>
+                                <span>1</span>
+                            </label>
+                            <label for="Letter" style="padding-right: 1em;">
+                                <input type="radio" id="Letter" name="labeltype" value="Letter">
+                                <span>C</span>
+                            </label>
+                            <label for="Letter_number">
+                                <input type="radio" id="Letter_number" name="labeltype" value="Letter_number">
+                                <span style="font-size: 0.5em; line-height: 1em; font-weight: bold; display: inline-block;">1<br />C</span>
+                            </label>
+                        </div>
                     </fieldset>
     
                     <fieldset>

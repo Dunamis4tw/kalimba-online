@@ -147,34 +147,86 @@ $(document).ready(function () {
             // Определяем сколько точек нужно нарисовать сверху цифры
             dots = ""
             for (let i = 0; i < Math.floor(num / 7); i++) dots += ".";
+            if (dots === "..") dots = ":";
 
             // Получаем итоговую метку клавиши
             let label = dots + "\n" + labelNum;
 
+            // Расчитываем множитель высоты
             let heightMultiplier = (27 + notesArray.length) - convertStringToNumber(note);
-            // Создаём элемент клавиши указав высоту и ноту
-            const keyZone = $('<div>', {
-                class: 'key-zone',
-                note: note,
-                height: (150 + 5 * heightMultiplier) + "px"
-            });
+
+            // Расчитываем высоту клавиши
+            let keyHeight = 170 + 5 * heightMultiplier;
 
             // Создаём элемент клавиши указав высоту и ноту
-            const keyElement = $('<div>', {
-                class: 'key',
-            });
+            // const keyZone = $('<div>', {
+            //     class: 'key-zone',
+            //     note: note,
+            //     height: (150 + 5 * heightMultiplier) + "px"
+            // });
 
-            // Создаём блок с меткой клавиши
-            keyElement.append($('<div>', {
-                class: 'note-text',
-                text: label,
-            }))
+            // // Создаём элемент клавиши указав высоту и ноту
+            // const keyElement = $('<div>', {
+            //     class: 'key',
+            // });
+            
+            // // Создаём элемент клавиши указав высоту и ноту
+            // const NoteTextElement = $('<div>', {
+            //     class: 'note-text',
+            //     // text: label,
+            // })
+
+
+            // // Создаём элемент клавиши указав высоту и ноту
+            // const noteNumber = $('<span>', {
+            //     class: 'note-number',
+            //     text: label,
+            // });
+
+            // // Создаём элемент клавиши указав высоту и ноту
+            // const noteLetter = $('<span>', {
+            //     class: 'note-letter',
+            //     text: note[0],
+            // });
+
+            // NoteTextElement.append(noteNumber);
+            // NoteTextElement.append(noteLetter);
+            
+            // // Создаём блок с меткой клавиши
+            // keyElement.append(NoteTextElement);
+
+            // Создаём клавишу
+            const keyZone = $('<div>')
+            .addClass('key-zone')
+            .attr('note', note)
+            .css('height', keyHeight + 'px')
+            .append(
+                $('<div>').addClass('key').append(
+                    $('<div>').addClass('note-text').append(
+                        $('<span>').addClass('note-number').text(label)
+                    ).append(
+                        $('<span>').addClass('note-letter').text(note[0])
+                    )
+                )
+            );
+
+            /* В keyZone генерируется следующая структура:
+                <div class="key-zone" note="{note}" style="height: {keyHeight + 'px'};">
+                    <div class="key">
+                        <div class="note-text">
+                            <span class="note-number">{label}</span>
+                            <span class="note-letter">{note[0]}</span>
+                        </div>
+                    </div>
+                </div>
+            */
 
             // Добавляем созданную клавишу на поле
-            // kalimbaKeysContainer.append(keyElement);
-            keyZone.append(keyElement);
             kalimbaKeysContainer.append(keyZone);
         });
+
+        // Обновляем метки
+        updateLetter();
 
         // Обновляем события
         KalimbaSF.then(function (k) {
@@ -407,6 +459,38 @@ $(document).ready(function () {
         addKeys(getArrayNotesKalimba(keysCount, arrangement));
     });
 
+
+    // Получаем метки клавиш из localStorage
+    let labeltype = window.localStorage && null !== window.localStorage.getItem("Labeltype") ? window.localStorage.getItem("Labeltype") : "Number";
+    $("input#" + labeltype).prop('checked', true);
+    // Событие при смене Labeltype
+    $('input', '#labeltype-radio-list').on("click", function () {
+        labeltype = $('input:checked', '#labeltype-radio-list').attr("id");
+        window.localStorage && window.localStorage.setItem("Labeltype", labeltype);
+        updateLetter();
+    });
+
+    // Обновляет метки на клавишах
+    function updateLetter() {
+        switch (labeltype) {
+            case "Number":
+                $('.note-letter').hide();
+                $('.note-number').show();
+                break;
+            case "Letter":
+                $('.note-letter').show();
+                $('.note-number').hide();
+                break;
+            case "Letter_number":
+                $('.note-letter').show();
+                $('.note-number').show();
+                break;
+            default:
+                break;
+        }
+    }
+
+
     $('#soundfonts').val(soundfont);
     // $("#soundfonts_source").text(soundfont + " source");
     $("#soundfonts_source").attr("href", Soundfonts[soundfont].sourceUrl);
@@ -438,6 +522,7 @@ TODO:
         + Различное звучание (soundfonts)
         + Выбор цвета калимбы и темы всего сайта
         + Порядок клавиш
+        + Отображение меток клавиш
         - Громкость звука
         - Тюнинг нот
     - Игра на клавиатуре:
@@ -448,7 +533,7 @@ TODO:
     + Распределить файлы по папкам css и js
     + Залить на GitHub
     - Реструктуризировать JS код
-    - Написать readme.md
+    - Написать readme.md (перенести туда TODO)
     + Сделать кнопку "Во весь экран"
     + Перевод на разные языки
 
