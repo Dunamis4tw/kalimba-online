@@ -49,12 +49,14 @@
 
         <main class="container" data-theme="generated">
 
-            <section id="fullscreenDiv">
-                <article class="fullscreen" data-theme="generated">
+            <section>
+                <article id="fullscreenDiv" data-theme="generated">
                     <!-- Блок с загрузкой -->
                     <article id="loading" aria-busy="true"></article>
                     <!-- Блок с клавишами -->
-                    <div class="kalimba-keys" style="display: none;"></div>
+                    <div class="kalimba-keys" style="display: none;">
+                        <!-- Заполняется в /js/kalimba.js -->
+                    </div>
                     <!-- Блок с кнопками -->
                     <div class="buttons">
                         <!-- Кнопка "Fullscreen" -->
@@ -117,14 +119,14 @@
                             Localization:
                         </label>
                         <select id="localization" required>
-                            <option value="ru" selected>ru</option>
-                            <option value="en">en</option>
+                            <!-- Заполняется в /js/lang.js -->
                         </select>
                     </fieldset>
     
                     <fieldset id="customization">
                         <style title="color-picker"></style>
                         <legend data-i18n="option.color">Color:</legend>
+                        <!-- Заполняется в /js/pico-color-picker.js -->
                     </fieldset>
                 </article>
             </section>

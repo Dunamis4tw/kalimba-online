@@ -17,10 +17,9 @@ $(document).ready(function () {
     $(document).on("fullscreenchange", function () {
         // Если полный экран выключен, выходим из него
         if (!document.fullscreenElement) {
-            $("header").show();
-            $("footer").show();
             $("#fullscreen-on").show();
             $("#fullscreen-off").hide();
+            $("#fullscreenDiv").removeClass("fullscreen");
         }
     });
 
@@ -35,10 +34,9 @@ $(document).ready(function () {
         } else if (fullscreenDiv.msRequestFullscreen) {
             fullscreenDiv.msRequestFullscreen();
         }
-        $("header").hide();
-        $("footer").hide();
         $("#fullscreen-on").hide();
         $("#fullscreen-off").show();
+        $("#fullscreenDiv").addClass("fullscreen");
     }
 
     // Функция выхода из полного экрана
@@ -52,9 +50,8 @@ $(document).ready(function () {
         } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
         }
-        $("header").show();
-        $("footer").show();
         $("#fullscreen-on").show();
         $("#fullscreen-off").hide();
+        $("#fullscreenDiv").removeClass("fullscreen");
     }
 });
