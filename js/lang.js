@@ -41,11 +41,13 @@ $.getJSON('/lang/en.json', function(data) {
 // Переводит всю страницу на указанный язык
 function loadLanguage(lang) {
     $.getJSON('/lang/' + lang + '.json', function(data) {
+        $('html').attr('lang', lang);
         $('[data-i18n]').each(function() {
             var key = $(this).data('i18n');
             // Если ключа в локализации нет, ключ берётся из дефолтного языка
             $(this).text(data[key] || defaultLocalization[key]);
         });
+        $('meta[name="description"]').attr('content', data["description"] || defaultLocalization["description"]);
     });
 }
 
