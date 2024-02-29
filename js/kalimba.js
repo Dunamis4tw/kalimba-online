@@ -1,3 +1,365 @@
+
+// saveToLocalStorage сохранянет значение value в localStorage под ключом key
+function saveToLocalStorage(key, value) {
+    window.localStorage && window.localStorage.setItem(key, value);
+}
+
+// loadFromLocalStorage возвращает значение ключа key в localStorage, если его нет, возращает default_value
+function loadFromLocalStorage(key, default_value) {
+    return window.localStorage && null !== window.localStorage.getItem(key) ? window.localStorage.getItem(key) : default_value;
+}
+
+const Soundfonts = {
+    'FluidR3_GM': {
+        url: 'https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/kalimba-mp3.js',
+        sourceUrl: 'https://gleitz.github.io/midi-js-soundfonts/',
+        gain: 6,
+    },
+    'FatBoy': {
+        url: 'https://gleitz.github.io/midi-js-soundfonts/FatBoy/kalimba-mp3.js',
+        sourceUrl: 'https://gleitz.github.io/midi-js-soundfonts/',
+        gain: 6,
+    },
+    'Keylimba': {
+        url: '/soundfonts/keylimba/kalimba.mp3.js',
+        sourceUrl: 'https://keylimba.carrd.co/',
+        gain: 1,
+    },
+};
+
+const allNotes = [
+    "A0", "B0",
+    "C1", "D1", "E1", "F1", "G1", "A1", "B1",
+    "C2", "D2", "E2", "F2", "G2", "A2", "B2",
+    "C3", "D3", "E3", "F3", "G3", "A3", "B3",
+    "C4", "D4", "E4", "F4", "G4", "A4", "B4",
+    "C5", "D5", "E5", "F5", "G5", "A5", "B5",
+    "C6", "D6", "E6", "F6", "G6", "A6", "B6",
+    "C7", "D7", "E7", "F7", "G7", "A7", "B7",
+    "C8"
+];
+
+// Возвращает числовое значение, соотвествующее ноте (Ноте C4 соотвествует число 28, D4 - 29 и т.д.)
+function convertStringToNumber(str) {
+    // Преобразование буквы в число
+    var firstLetterValue = 'CDEFGAB'.indexOf(str[0]);
+    // Преобразование цифры в число
+    var secondDigitValue = parseInt(str[1]);
+    // Получаем номер числа
+    var result = firstLetterValue + (secondDigitValue * 7);
+    return result;
+}
+
+// Сортирует входящий массив клавиш и выводит их в порядке Калимбы
+function sortArrayKalimba(notesArr) {
+    let sortedArr = []
+    for (let i = notesArr.length - notesArr.length % 2 - 1; i > 0; i -= 2) {
+        sortedArr.push(notesArr[i]);
+    }
+    for (let i = 0; i < notesArr.length; i += 2) {
+        sortedArr.push(notesArr[i]);
+    }
+    return sortedArr;
+}
+
+// Возвращает массив нот, где keys - количество клавиш, arrangement - порядок
+function getArrayNotesKalimba(keys, arrangement) {
+    const posC4 = 23;
+    slicedNotes = allNotes.slice(posC4, posC4 + parseInt(keys));
+    orderedNotes = sortArrayKalimba(slicedNotes);
+
+    switch (arrangement) {
+        case "Ascending":
+            return slicedNotes;
+        case "Alternating":
+            return sortArrayKalimba(slicedNotes);
+        case "Descending":
+            return slicedNotes.reverse();
+        default:
+            return slicedNotes;
+    }
+}
+
+
+// Флаг, нажата ли ЛКМ
+var isMouseDown = false;
+        
+// Выключаем флаг isMouseDown когда отжат ЛКМ
+$(document).on('mouseup', (event) => {
+    // Проверка, что отпущена левая кнопка мыши (код 0)
+    if (event.button === 0) {
+        isMouseDown = false;
+    }
+});
+
+
+// Включаем флаг isMouseDown когда нажат ЛКМ
+$(document).on('mousedown', (event) => {
+    // Проверка, что нажата левая кнопка мыши (код 0)
+    if (event.button === 0) {
+        isMouseDown = true;
+    }
+});
+
+
+// Обновляет метки на клавишах
+function updateLetter() {
+    switch (kalimba_online.labelType) {
+        case "Number":
+            $('.note-letter').hide();
+            $('.note-number').show();
+            break;
+        case "Letter":
+            $('.note-letter').show();
+            $('.note-number').hide();
+            break;
+        case "Letter_number":
+            $('.note-letter').show();
+            $('.note-number').show();
+            break;
+        default:
+            break;
+    }
+}
+
+class Kalimba_Online {
+    _kalimba = {};
+
+    get soundfont() { return loadFromLocalStorage("soundfont", "Keylimba"); }
+    get arrangement() { return loadFromLocalStorage("arrangement", "Alternating"); }
+    get keysCount() { return loadFromLocalStorage("keysCount", 17); }
+    get labelType() { return loadFromLocalStorage("labelType", "Number"); }
+    get currentSoundfont () { return Soundfonts[this.soundfont]; }
+    get kalimba () { return this._kalimba; }
+
+    set soundfont(value) { saveToLocalStorage("soundfont", value); }
+    set arrangement(value) { saveToLocalStorage("arrangement", value); }
+    set keysCount(value) { saveToLocalStorage("keysCount", value); }
+    set labelType(value) { saveToLocalStorage("labelType", value); }
+    set kalimba(value) { this._kalimba = value; }
+
+
+    constructor() {
+        this.loadSF();
+    }
+
+    // Маркер, определяющий тачскрин
+    ifTouchscreen = false;
+    
+    // Перменная буфер, хранящая последнюю нажатую тачпадом клавишу
+    lastTouchKeysPressed=[];
+    
+    loadSF() {
+        // Загружаем звуки калимбы
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        var KalimbaSF = Soundfont.instrument(audioContext, this.currentSoundfont.url, { gain: this.currentSoundfont.gain });
+
+        // Скрываем и чистим поле от предыдущих клавишь
+        $('.kalimba-keys').hide();
+        // Отображаем колесо загрузки
+        $('#loading').show();
+
+        // Обновляем события
+        KalimbaSF.then((k) => {
+            this.kalimba = k;
+            this.addKeys();
+            $('#loading').hide();
+            $('.kalimba-keys').show();
+        });
+    }
+
+    
+    // Добавляет Клавиши на форму
+    addKeys() {
+        $('.kalimba-keys').empty();
+
+        let notesArray = getArrayNotesKalimba(this.keysCount, this.arrangement);
+
+        // Перебираем массив с клавишами, которые надо добавить на поле
+        notesArray.forEach(note => {
+
+            // Получаем номер клавиши, где C4 - 0, D4 - 1 и т.д.
+            let num = convertStringToNumber(note) - 28;
+            // Теперь номера 8 9 10 ... преобразовываем в 1 2 3 ...
+            let labelNum = num % 7 + 1;
+
+            // Определяем сколько точек нужно нарисовать сверху цифры
+            let dots = "";
+            for (let i = 0; i < Math.floor(num / 7); i++) dots += ".";
+            if (dots === "..") dots = ":";
+
+            // Получаем итоговую метку клавиши
+            let label = dots + "\n" + labelNum;
+
+            // Расчитываем множитель высоты
+            let heightMultiplier = (27 + notesArray.length) - convertStringToNumber(note);
+
+            // Расчитываем высоту клавиши
+            let keyHeight = 170 + 5 * heightMultiplier;
+
+            // Создаём клавишу
+            const keyZone = $('<div>')
+            .addClass('key-zone')
+            .attr('note', note)
+            .css('height', keyHeight + 'px')
+            .append(
+                $('<div>').addClass('key').append(
+                    $('<div>').addClass('note-text').append(
+                        $('<span>').addClass('note-number').text(label)
+                    ).append(
+                        $('<span>').addClass('note-letter').text(note[0])
+                    )
+                )
+            );
+
+            /* В keyZone генерируется следующая структура:
+                <div class="key-zone" note="{note}" style="height: {keyHeight + 'px'};">
+                    <div class="key">
+                        <div class="note-text">
+                            <span class="note-number">{label}</span>
+                            <span class="note-letter">{note[0]}</span>
+                        </div>
+                    </div>
+                </div>
+            */
+
+            // Событие: Одиночное нажатие мышкой по клавише
+            keyZone.on('mousedown', () => {
+                // Если пользователь с тачскрином, звук воспроизводится в другом событии
+                if (!this.ifTouchscreen) {
+                    this.playSound(note);
+                }
+            });
+
+            // Событие: Зажатие мышки и ведение по клавишам
+            keyZone.on('mouseover', (event) => {
+                // Если нажата мышь и курсор находится внутри клавиши (без второй проверки, событие вызывается лишний раз)
+                if (isMouseDown && !$(event.relatedTarget).closest(keyZone).length) {
+                    this.playSound(note);
+                }
+            });
+
+            // Событие: Одиночное нажатие пальцем по клавише
+            keyZone.on('touchstart', (event) => {
+                // Если сработало это событие, значит пользователь с тачскрином
+                this.ifTouchscreen = true;
+
+                // let note = $(this).attr('note');
+                this.playSound(note);
+                // keyShake($('.key', this));
+
+                // Смотрим какое последнее касание экрана было
+                let key = $(event.touches[event.touches.length - 1].target);
+                // Находим родительский элемент, пока у него не будет аттрибута note
+                let i = 0;
+                while (key.attr('note') === undefined && i<2) {
+                    key = key.parent();
+                    i++;
+                }
+                // Получаем ноту из атрибута и записываем
+                this.lastTouchKeysPressed[event.touches.length - 1] = key.attr('note');
+
+            });
+
+            // Событие: Зажатие пальцем и ведение по клавишам
+            keyZone.on('touchmove', (event) => {
+                for (let j = 0; j < event.touches.length; j++) {
+                    var touch = event.touches[j]; // Получаем информацию о первом пальце
+                    var key = $(document.elementFromPoint(touch.clientX, touch.clientY));
+
+                    let i = 0;
+                    while (key.attr('note') === undefined && i<2) {
+                        key = key.parent();
+                        i++;
+                        if (i>2) console.log(i);
+                    }
+                    let note = key.attr('note');
+
+                    if (note !== undefined && !this.lastTouchKeysPressed.includes(note)) {
+                        this.lastTouchKeysPressed[j]=note;
+                        this.playSound(note);
+                    }
+                }
+            });
+
+            // Добавляем созданную клавишу на поле
+            $('.kalimba-keys').append(keyZone);
+        });
+
+        updateLetter();
+    }
+
+    // Воспроизводит звук
+    playSound(note) {
+        this._kalimba.play(note);
+        this.keyShake($(`.key-zone[note=${note}] .key`));
+        console.log('Pressed \'' + note + '\' (' + convertStringToNumber(note) + ')');
+    }
+    
+    // Иницирует анимацию тряски клавиши
+    keyShake(keyObj) {
+        keyObj.removeClass('key-click');
+        setTimeout(() => {
+            keyObj.addClass('key-click');
+        }, 1);
+    }
+}
+
+const kalimba_online = new Kalimba_Online();
+
+$(document).ready(function () {
+    $('input[type=range]').on('input', function () {
+        $(this).trigger('change');
+    });
+
+    // Получаем количество клавиш из localStorage и отображаем на странице
+    $('#range-keys').val(kalimba_online.keysCount);
+    $('#range-keys-value').text(kalimba_online.keysCount);
+
+    // Событие при смене количества клавиш
+    $('#range-keys').change(function () {
+        kalimba_online.keysCount = $('#range-keys').val();
+        $('#range-keys-value').text(kalimba_online.keysCount);
+        kalimba_online.addKeys();
+    });
+
+    // Получаем порядок клавиш из localStorage и отображаем на странице
+    $("input#" + kalimba_online.arrangement).prop('checked', true);
+
+    // Событие при смене Arrangement
+    $('input', '#arrangement-radio-list').on("click", function () {
+        kalimba_online.arrangement = $('input:checked', '#arrangement-radio-list').attr("id");
+        kalimba_online.addKeys();
+    });
+
+    // Получаем метки клавиш из localStorage
+    $("input#" + kalimba_online.labelType).prop('checked', true);
+
+    // Событие при смене Labeltype
+    $('input', '#labeltype-radio-list').on("click", function () {
+        kalimba_online.labelType = $('input:checked', '#labeltype-radio-list').attr("id");
+        updateLetter();
+    });
+
+
+    $('#soundfonts').val(kalimba_online.soundfont);
+    $("#soundfonts_source").attr("href", kalimba_online.currentSoundfont.sourceUrl);
+
+    // Событие при смене Soundfont
+    $('#soundfonts').change(function () {
+        kalimba_online.soundfont = $(this).val();
+        kalimba_online.loadSF();
+        $("#soundfonts_source").attr("href", kalimba_online.currentSoundfont.sourceUrl);
+    });
+
+});
+
+
+
+
+
+// Времнно оставлен старый код
+throw "stop";
 $(document).ready(function () {
     // const notes17keysOrder = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6", "E6"];
     // const notes17keys = ["D6", "B5", "G5", "E5", "C5", "A4", "F4", "D4", "C4", "E4", "G4", "B4", "D5", "F5", "A5", "C6", "E6"];
@@ -532,10 +894,11 @@ TODO:
         - Настроить отображение клавиатурных клавиш на клавишах калимбы
     + Распределить файлы по папкам css и js
     + Залить на GitHub
-    - Реструктуризировать JS код
+    + Реструктуризировать JS код (Прикрутить ООП)
     - Написать readme.md (перенести туда TODO)
     + Сделать кнопку "Во весь экран"
     + Перевод на разные языки
+    - Сделать более компактными настройки калимбы
 
 TODO (в долгосрочной перспективе):
     - Запись нажимаемых клавиш и воспроизведение
