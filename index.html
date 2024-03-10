@@ -7,6 +7,8 @@
     <meta name="author" content="Artem Samsonov">
     <meta name="description" content="It is a creative platform where you can effortlessly and enjoyably play the kalimba directly in your browser">
     <link rel="canonical" href="https://kalimba-online.ru" />
+
+    <link rel="manifest" href="manifest.json">
     
     <!-- Загрузка JQuery с CDN -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -37,7 +39,7 @@
 </head>
 
 <body>
-    <main class="container">
+    <main class="container" data-theme="generated">
 
         <header class="container">
             <hgroup>
@@ -47,109 +49,120 @@
             </hgroup>
         </header>
 
-        <main class="container" data-theme="generated">
 
-            <section>
-                <article id="fullscreenDiv" data-theme="generated">
-                    <!-- Блок с загрузкой -->
-                    <article id="loading" aria-busy="true"></article>
-                    <!-- Блок с клавишами -->
-                    <div class="kalimba-keys" style="display: none;">
-                        <!-- Заполняется в /js/kalimba.js -->
+        <section>
+            <article id="fullscreenDiv" data-theme="generated">
+                <!-- Блок с загрузкой -->
+                <article id="loading" aria-busy="true"></article>
+                <!-- Блок с клавишами -->
+                <div class="kalimba-keys" style="display: none;">
+                    <!-- Заполняется в /js/kalimba.js -->
+                </div>
+                <!-- Блок с кнопками -->
+                <div class="buttons">
+                    <!-- Кнопка "Fullscreen" -->
+                    <button id="fullscreenButton" class="fullscreen-button">
+                        <svg id="fullscreen-on" viewBox="0 0 24 24">
+                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 
+                            7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                        </svg>
+                        <svg id="fullscreen-off" viewBox="0 0 24 24" style="display: none;">
+                            <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 
+                            11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
+                        </svg>
+                    </button>
+                </div>
+            </article>
+        </section>
+
+        <section id="options">
+            <article>
+                <h2 data-i18n="option.title">Options</h2>
+                <fieldset>
+                    <label for="range-keys"><span data-i18n="option.keys"> Keys: </span><span id="range-keys-value">17</span>
+                        <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
+                    </label>
+                </fieldset>
+
+                <fieldset>
+                    <label for="range-baseNote">
+                        <span data-i18n="option.baseNote"> Base Note: </span><span id="range-baseNote-value"><span>C<sub>4</sub></span></span>
+                    </label>
+                    <input type="range" min="35" max="46" value="39" id="range-baseNote" name="range-baseNote">
+                </fieldset>
+                
+                <fieldset>
+                    <label>
+                        <span data-i18n="option.tune"> Tune keys: </span>
+                    </label>
+                    <div class="tune-field">
+                        <!-- Заполняется в /js/kalimba.js в updateTunes() -->
                     </div>
-                    <!-- Блок с кнопками -->
-                    <div class="buttons">
-                        <!-- Кнопка "Fullscreen" -->
-                        <button id="fullscreenButton" class="fullscreen-button">
-                            <svg id="fullscreen-on" viewBox="0 0 24 24">
-                                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 
-                                7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
-                            </svg>
-                            <svg id="fullscreen-off" viewBox="0 0 24 24" style="display: none;">
-                                <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 
-                                11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
-                            </svg>
-                        </button>
+                </fieldset>
+
+                <fieldset id="arrangement-radio-list">
+                    <legend data-i18n="option.arrangement"> Arrangement: </legend>
+                    <label for="Ascending">
+                        <input type="radio" id="Ascending" name="arrangement" value="Ascending">
+                        <span data-i18n="option.ascending">Ascending</span>
+                    </label>
+                    <label for="Alternating">
+                        <input type="radio" id="Alternating" name="arrangement" value="Alternating" checked>
+                        <span data-i18n="option.alternating">Alternating</span>
+                    </label>
+                    <label for="Descending">
+                        <input type="radio" id="Descending" name="arrangement" value="Descending">
+                        <span data-i18n="option.descending">Descending</span>
+                    </label>
+                </fieldset>
+                
+                <fieldset id="labeltype-radio-list">
+                    <legend data-i18n="option.labeltype"> Label Еype: </legend>
+                    <div style="display: flex;">
+                        <label for="Number" style="padding-right: 1em;">
+                            <input type="radio" id="Number" name="labeltype" value="Number" checked>
+                            <span>1</span>
+                        </label>
+                        <label for="Letter" style="padding-right: 1em;">
+                            <input type="radio" id="Letter" name="labeltype" value="Letter">
+                            <span>C</span>
+                        </label>
+                        <label for="Letter_number">
+                            <input type="radio" id="Letter_number" name="labeltype" value="Letter_number">
+                            <span style="font-size: 0.5em; line-height: 1em; font-weight: bold; display: inline-block;">1<br />C</span>
+                        </label>
                     </div>
-                </article>
-            </section>
+                </fieldset>
 
-            <section id="options">
-                <article>
-                    <h2 data-i18n="option.title">Options</h2>
-                    <fieldset>
-                        <label for="range-keys"><span data-i18n="option.keys"> Keys: </span><span id="range-keys-value">17</span>
-                            <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
-                        </label>
-                    </fieldset>
-    
-                    <fieldset id="arrangement-radio-list">
-                        <legend data-i18n="option.arrangement">Arrangement:</legend>
-                        <label for="Ascending">
-                            <input type="radio" id="Ascending" name="arrangement" value="Ascending">
-                            <span data-i18n="option.ascending">Ascending</span>
-                        </label>
-                        <label for="Alternating">
-                            <input type="radio" id="Alternating" name="arrangement" value="Alternating" checked>
-                            <span data-i18n="option.alternating">Alternating</span>
-                        </label>
-                        <label for="Descending">
-                            <input type="radio" id="Descending" name="arrangement" value="Descending">
-                            <span data-i18n="option.descending">Descending</span>
-                        </label>
-                    </fieldset>
-                    
-                    <fieldset id="labeltype-radio-list">
-                        <legend data-i18n="option.labeltype">Label type:</legend>
-                        <div style="display: flex;">
-                            <label for="Number" style="padding-right: 1em;">
-                                <input type="radio" id="Number" name="labeltype" value="Number" checked>
-                                <span>1</span>
-                            </label>
-                            <label for="Letter" style="padding-right: 1em;">
-                                <input type="radio" id="Letter" name="labeltype" value="Letter">
-                                <span>C</span>
-                            </label>
-                            <label for="Letter_number">
-                                <input type="radio" id="Letter_number" name="labeltype" value="Letter_number">
-                                <span style="font-size: 0.5em; line-height: 1em; font-weight: bold; display: inline-block;">1<br />C</span>
-                            </label>
-                        </div>
-                    </fieldset>
-    
-                    <fieldset>
-                        <label for="soundfonts">
-                            <span data-i18n="option.soundfonts">Soundfonts</span>
-                            <small>
-                                (<a id="soundfonts_source" data-i18n="option.source" href="#" target="_blank">source</a>)
-                            </small>:
-                        </label>
-                        <select id="soundfonts" required>
-                            <option value="FluidR3_GM" selected>FluidR3_GM</option>
-                            <option value="FatBoy">FatBoy</option>
-                            <option value="Keylimba">Keylimba</option>
-                        </select>
-                    </fieldset>
+                <fieldset>
+                    <label for="soundfonts">
+                        <span data-i18n="option.soundfonts">Soundfonts</span>
+                        <small>
+                            (<a id="soundfonts_source" data-i18n="option.source" href="#" target="_blank">source</a>)
+                        </small>:
+                    </label>
+                    <select id="soundfonts" required>
+                        <option value="FluidR3_GM" selected>FluidR3_GM</option>
+                        <option value="FatBoy">FatBoy</option>
+                        <option value="Keylimba">Keylimba</option>
+                    </select>
+                </fieldset>
 
-                    
-                    <fieldset>
-                        <label for="localization" data-i18n="option.localization">
-                            Localization:
-                        </label>
-                        <select id="localization" required>
-                            <!-- Заполняется в /js/lang.js -->
-                        </select>
-                    </fieldset>
-    
-                    <fieldset id="customization">
-                        <style title="color-picker"></style>
-                        <legend data-i18n="option.color">Color:</legend>
-                        <!-- Заполняется в /js/pico-color-picker.js -->
-                    </fieldset>
-                </article>
-            </section>
+                <fieldset>
+                    <label for="localization" data-i18n="option.localization">
+                        Localization:
+                    </label>
+                    <select id="localization" required>
+                        <!-- Заполняется в /js/lang.js -->
+                    </select>
+                </fieldset>
 
-        </main>
+                <fieldset id="customization">
+                    <legend data-i18n="option.color">Color:</legend>
+                    <!-- Заполняется в /js/pico-color-picker.js -->
+                </fieldset>
+            </article>
+        </section>
 
 
         <footer>

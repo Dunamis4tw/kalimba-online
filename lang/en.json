@@ -3,6 +3,8 @@
     "description": "It is a creative platform where you can effortlessly and enjoyably play the kalimba directly in your browser.",
     "option.title": "Options",
     "option.keys": "Keys: ",
+    "option.baseNote": "Base Note: ",
+    "option.tune": "Tune keys:",
     "option.arrangement": "Arrangement:",
     "option.ascending": "Ascending",
     "option.alternating": "Alternating",

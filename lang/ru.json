@@ -3,6 +3,8 @@
     "description": "Это креативная платформа, где вы можете легко и с удовольствием играть на калимбе прямо в браузере.",
     "option.title": "Настройки",
     "option.keys": "Клавиш: ",
+    "option.baseNote": "Базовая нота: ",
+    "option.tune": "Настройка клавиш:",
     "option.arrangement": "Порядок клавиш:",
     "option.ascending": "По возрастанию",
     "option.alternating": "Чередование",

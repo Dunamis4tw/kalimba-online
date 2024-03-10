@@ -20,7 +20,7 @@ html {
 }
 
 /* Для ПК */
-@media  (min-width: 768px) {
+@media (min-width: 768px) {
     .kalimba-keys {
         justify-content: center;
     }
@@ -32,7 +32,7 @@ html {
     justify-content: flex-end;
     align-items: center;
     overflow: hidden;
-    
+
 }
 
 .key {
@@ -65,6 +65,7 @@ html {
     .key {
         margin: 2px;
     }
+
     .key-zone {
         width: 50px;
         padding: 2px;
@@ -72,10 +73,11 @@ html {
 }
 
 /* Для ПК */
-@media  (min-width: 768px) {
+@media (min-width: 768px) {
     .key {
         margin: 5px;
     }
+
     .key-zone {
         width: 50px;
         padding: 5px;
@@ -91,7 +93,7 @@ html {
     text-align: center;
     text-decoration: none;
     line-height: 1em;
-    
+
     width: 100%;
     height: 100%;
     display: flex;
@@ -126,8 +128,14 @@ html {
     margin-bottom: 0.3em;
 }
 
+.note-letter sub {
+    font-size: x-small;
+    font-weight: normal;
+}
+
 @keyframes shake2 {
     /*
+        Вибрация построена на основе следующей формулы
         f(x) = (-0.093*x + 0,0927) * COS(100*x) * 1.2^(-10*x) 
         https://www.desmos.com/calculator/aorly47ttb 
     */
@@ -166,4 +174,26 @@ html {
     height: 100%;
     justify-content: center;
     align-items: flex-end;
+}
+
+input[type=range][orient=vertical] {
+    appearance: slider-vertical;
+    -webkit-appearance: slider-vertical;
+    width: 16px;
+    height: 48px;
+    margin-top: 2px;
+}
+
+.tune-label {
+    display: flex;
+    flex-direction: column;
+    min-width: 37px;
+    align-items: center;
+}
+
+.tune-field {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
 }
