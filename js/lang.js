@@ -8,8 +8,16 @@ var langs = [
     {code: 'zh-CN', text: 'Chinese (中文)'}, // Китайский язык (упрощённый)
     {code: 'ar', text: 'Arabic (العربية)'}, // Арабский язык
     {code: 'pt', text: 'Portuguese (Português)'}, // Португальский язык
-    {code: 'ja', text: 'Japanese (日本語)'} // Японский язык
+    {code: 'ja', text: 'Japanese (日本語)'}, // Японский язык
+    {code: 'id', text: 'Indonesian (Bahasa Indonesia)'} // Индонезийский язык
 ];
+
+// Сортирует массив языков по полю text
+langs.sort(function(a, b) {
+    var textA = a.text.toUpperCase();
+    var textB = b.text.toUpperCase();
+    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+});
 
 var currentLang = window.localStorage && null !== window.localStorage.getItem("localization") ? window.localStorage.getItem("localization") : getUserLang();
 

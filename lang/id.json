@@ -1,0 +1,22 @@
+{
+    "title": "Kalimba Online",
+    "description": "Ini adalah platform kreatif di mana Anda dapat dengan mudah dan menyenangkan bermain kalimba langsung di peramban Anda.",
+    "option.title": "Opsi",
+    "option.keys": "Kunci: ",
+    "option.baseNote": "Nota Dasar: ",
+    "option.tune": "Nada kunci:",
+    "option.arrangement": "Penyusunan:",
+    "option.ascending": "Menaik",
+    "option.alternating": "Berganti-ganti",
+    "option.descending": "Menurun",
+    "option.labeltype": "Jenis Label:",
+    "option.soundfonts": "Font Bunyi",
+    "option.localization": "Lokalisasi:",
+    "option.source": "sumber",
+    "option.color": "Warna:",
+    "footer.builtwith": "Dibangun dengan",
+    "footer.sourcecode": "Kod Sumber",
+    "footer.hostedby": "Dihoskan oleh",
+    "theme.darkmode.on": "Hidupkan mod gelap",
+    "theme.darkmode.off": "Matikan mod gelap"
+}
