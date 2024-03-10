@@ -184,6 +184,16 @@ input[type=range][orient=vertical] {
     margin-top: 2px;
 }
 
+@-moz-document url-prefix() {
+    input[type=range][orient=vertical] {
+        background: var(--range-border-color);
+    }
+    input[type=range][orient=vertical]::-moz-range-thumb {
+        height: 16px;
+        width: 16px;
+    }
+}
+
 .tune-label {
     display: flex;
     flex-direction: column;
