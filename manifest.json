@@ -1,0 +1,54 @@
+{
+  "id": "/",
+  "name": "Kalimba Online",
+  "short_name": "Kalimba",
+  "icons": [
+    {
+      "src": "img/152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "img/144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "img/192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "img/screen1.png",
+      "sizes": "920x468",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "8 key kalimba"
+    },
+    {
+      "src": "img/screen2.png",
+      "sizes": "920x468",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "21 key kalimba"
+    },
+    {
+      "src": "img/screen3.png",
+      "sizes": "425x539",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "8 key kalimba on phone"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#11191f",
+  "theme_color": "#43a047"
+}
