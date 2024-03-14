@@ -182,16 +182,14 @@ input[type=range][orient=vertical] {
     width: 16px;
     height: 48px;
     margin-top: 2px;
+    /* В некоторых браузерах почему-то нет фона */
+    background: var(--range-border-color);
 }
 
-@-moz-document url-prefix() {
-    input[type=range][orient=vertical] {
-        background: var(--range-border-color);
-    }
-    input[type=range][orient=vertical]::-moz-range-thumb {
-        height: 16px;
-        width: 16px;
-    }
+/* Уменьшаем ползунок в Firefox (он там почему то больше) */
+input[type=range][orient=vertical]::-moz-range-thumb {
+    height: 16px;
+    width: 16px;
 }
 
 .tune-label {
