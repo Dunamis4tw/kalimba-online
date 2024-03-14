@@ -130,17 +130,19 @@ class Kalimba_Online {
     loadSF() {
         var KalimbaSF = Soundfont.instrument(this._audioContext, this.currentSoundfont.url, { gain: this.currentSoundfont.gain });
 
-        // Скрываем и чистим поле от предыдущих клавишь
-        $('.kalimba-keys').hide();
+        // Чистим поле от предыдущих клавиш
+        $('.kalimba-keys').empty();
         // Отображаем колесо загрузки
-        $('#loading').show();
+        $('.kalimba-keys').attr("aria-busy", true);
 
         // Обновляем события
         KalimbaSF.then((k) => {
+            // Получаем новый инструмент
             this.kalimba = k;
+            // Добавляем клавиши на экран
             this.addKeys();
-            $('#loading').hide();
-            $('.kalimba-keys').show();
+            // Скрываем колесо загрузки
+            $('.kalimba-keys').removeAttr("aria-busy");
         });
     }
 
@@ -167,11 +169,13 @@ class Kalimba_Online {
     
     // Добавляет Клавиши на форму
     addKeys() {
+        // Чистим поле от предыдущих клавиш
         $('.kalimba-keys').empty();
 
-        // let notesArray = getArrayNotesKalimba(this.keysCount, this.arrangement);
+        // Получаем массив нот с текущими настройками
         let notesArray = this.getNotes();
         
+        // Сортируем ноты
         let sortedNotes = notesArray;
 
         switch (this.arrangement) {
@@ -190,8 +194,7 @@ class Kalimba_Online {
         }
 
         // Перебираем массив с клавишами, которые надо добавить на поле
-        sortedNotes.forEach((note, index) => {
-            
+        sortedNotes.forEach((note) => {
             // Получаем номер клавиши, где C4 - 0, D4 - 1 и т.д.
             let num = notesArray.indexOf(note);
             // Теперь номера 8 9 10 ... преобразовываем в 1 2 3 ...
@@ -215,21 +218,21 @@ class Kalimba_Online {
             
             // Создаём клавишу
             const keyZone = $('<div>')
-            .addClass('key-zone')
-            .attr('note', note)
-            .attr('notenumber', notesArray.indexOf(note))
-            .css('height', keyHeight + 'px')
-            .append(
-                $('<div>').addClass('key').append(
-                    $('<div>').addClass('note-text').append(
-                        $('<span>').addClass('note-number').text(label)
-                    ).append(
-                        $('<span>').addClass('note-letter').text(letter.slice(0, -1)).append(
-                            $('<sub>').text(letter.slice(-1))
+                .addClass('key-zone')
+                .attr('note', note)
+                .attr('notenumber', notesArray.indexOf(note))
+                .css('height', keyHeight + 'px')
+                .append(
+                    $('<div>').addClass('key').append(
+                        $('<div>').addClass('note-text').append(
+                            $('<span>').addClass('note-number').text(label)
+                        ).append(
+                            $('<span>').addClass('note-letter').text(letter.slice(0, -1)).append(
+                                $('<sub>').text(letter.slice(-1))
+                            )
                         )
                     )
-                )
-            );
+                );
 
             /* В keyZone генерируется следующая структура:
                 <div class="key-zone" note="{note}" style="height: {keyHeight + 'px'};">
