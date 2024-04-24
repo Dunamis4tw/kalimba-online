@@ -2,6 +2,7 @@
     "title": "卡琳巴在线",
     "description": "这是一个创意平台，您可以在浏览器中轻松愉快地直接演奏卡琳巴。",
     "option.title": "选项",
+    "option.volume": "音量: ",
     "option.keys": "键：",
     "option.baseNote": "基本音: ",
     "option.tune": "调整按键:",

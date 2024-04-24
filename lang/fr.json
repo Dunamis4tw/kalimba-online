@@ -2,6 +2,7 @@
     "title": "Kalimba en ligne",
     "description": "C'est une plateforme créative où vous pouvez jouer de la kalimba facilement et agréablement directement dans votre navigateur.",
     "option.title": "Options",
+    "option.volume": "Volume : ",
     "option.keys": "Touches : ",
     "option.baseNote": "Note de base : ",
     "option.tune": "Accorder les touches :",

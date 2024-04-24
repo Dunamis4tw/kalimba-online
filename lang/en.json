@@ -2,6 +2,7 @@
     "title": "Kalimba Online",
     "description": "It is a creative platform where you can effortlessly and enjoyably play the kalimba directly in your browser.",
     "option.title": "Options",
+    "option.volume": "Volume: ",
     "option.keys": "Keys: ",
     "option.baseNote": "Base Note: ",
     "option.tune": "Tune keys:",

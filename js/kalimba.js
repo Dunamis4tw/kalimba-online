@@ -188,6 +188,7 @@ class Kalimba_Online {
     get tunes() { return loadFromLocalStorage("tunes", Array(21).fill(0).join(',')).split(",").map(Number); }
     get keyboardScheme () { return loadFromLocalStorage("keyboardScheme", 0); }
     get currentKeyboardScheme () { return keyboardSchemes[this.keyboardScheme]; }
+    get volume() { return loadFromLocalStorage("volume", 75); }
 
     set soundfont(value) { saveToLocalStorage("soundfont", value); }
     set arrangement(value) { saveToLocalStorage("arrangement", value); }
@@ -197,6 +198,7 @@ class Kalimba_Online {
     set baseNote(value) { saveToLocalStorage("baseNote", value); }
     set tunes(value) { saveToLocalStorage("tunes", value); }
     set keyboardScheme(value) { saveToLocalStorage("keyboardScheme", value); }
+    set volume(value) { saveToLocalStorage("volume", value); }
 
 
     constructor() {
@@ -214,7 +216,7 @@ class Kalimba_Online {
     
     // Загружает звуки
     loadSF() {
-        var KalimbaSF = Soundfont.instrument(this._audioContext, this.currentSoundfont.url, { gain: this.currentSoundfont.gain });
+        var KalimbaSF = Soundfont.instrument(this._audioContext, this.currentSoundfont.url);
 
         // Чистим поле от предыдущих клавиш
         $('.kalimba-keys').empty();
@@ -406,7 +408,11 @@ class Kalimba_Online {
 
     // Воспроизводит звук
     playSound(note) {
-        this._kalimba.play(note);
+        // Считаем громкость по логарифмической шкале (по ощущениям хуже, чем с обычной шкалой):
+        // let currentVolume = this.currentSoundfont.gain * Math.log10(1 + 9 * this.volume / 100);
+        // Считаем громкость по обычной шкале:
+        let currentVolume = this.currentSoundfont.gain * this.volume / 100;
+        this._kalimba.play(note, 0, { gain: currentVolume });
         this.keyShake($(`.key-zone[note='${note}'] .key`));
         console.log('Pressed \'' + note + '\' (' + allNotesSharp.indexOf(note) + ')');
     }
@@ -525,6 +531,17 @@ function showKeyboardScheme(keyMapScheme) {
 // // // // // // // // // // //
 
 $(document).ready(function () {
+
+    // Отображаем настройки громкости на странице (из localStorage)
+    $('#range-volume').val(kalimba_online.volume);
+    $('#range-volume-value').text(kalimba_online.volume);
+    // Событие при смене громкости
+    $('#range-volume').on('input', function () {
+        kalimba_online.volume = $('#range-volume').val();
+        $('#range-volume-value').text(kalimba_online.volume);
+        kalimba_online.addKeys();
+        updateTunes();
+    });
 
     // Отображаем количество keysCount клавиш на странице (из localStorage)
     $('#range-keys').val(kalimba_online.keysCount);
@@ -655,15 +672,15 @@ TODO:
         + Одновременное нажатие на несколько клавиш
         + Водить пальцем по экрану
         - Исправить баг: После одновременного нажатия на 2 клавиши, при ведении пальцем она не работает
-    - Добавить настройки Калимбы:
+    + Добавить настройки Калимбы:
         + Количество клавиш
         + Различное звучание (soundfonts)
         + Выбор цвета калимбы и темы всего сайта
         + Порядок клавиш
         + Отображение меток клавиш
-        - Громкость звука
+        + Громкость звука
         + Тюнинг нот
-    - Игра на клавиатуре:
+    + Игра на клавиатуре:
         + Возможность играть на клавиатуре
         + Нажатие клавиши с пробелом повышает её звучание на 1 октаву
         + Различные пресеты управления

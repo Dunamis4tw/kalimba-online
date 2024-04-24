@@ -2,6 +2,7 @@
     "title": "オンラインカリンバ",
     "description": "これは、ブラウザで直接カリンバを楽しんで演奏できるクリエイティブなプラットフォームです。",
     "option.title": "オプション",
+    "option.volume": "ボリューム: ",
     "option.keys": "キー：",
     "option.baseNote": "基本音: ",
     "option.tune": "キーの調律:",

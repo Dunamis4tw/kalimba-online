@@ -2,6 +2,7 @@
     "title": "Kalimba Online",
     "description": "Es ist eine kreative Plattform, auf der Sie mühelos und genussvoll direkt in Ihrem Browser Kalimba spielen können.",
     "option.title": "Optionen",
+    "option.volume": "Lautstärke: ",
     "option.keys": "Tasten: ",
     "option.baseNote": "Grundnote: ",
     "option.tune": "Tasten stimmen:",
