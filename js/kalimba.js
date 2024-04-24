@@ -9,6 +9,11 @@ function loadFromLocalStorage(key, default_value) {
     return window.localStorage && null !== window.localStorage.getItem(key) ? window.localStorage.getItem(key) : default_value;
 }
 
+
+// // // // // //
+//  КОНСТАНТЫ  //
+// // // // // //
+
 const Soundfonts = {
     'FluidR3_GM': {
         url: 'https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/kalimba-mp3.js',
@@ -50,11 +55,70 @@ const allNotesSharp = [                                       "A0", "A#0", "B0",
     "C8"
 ];
 
+// Объект с клавишами, где ключ - это keycode, а значение - название клавиши
+const keyboardKeys = {
+    192: "`", 49: "1", 50: "2", 51: "3", 52: "4", 53: "5", 54: "6", 55: "7", 56: "8", 57: "9", 48: "0", 189: "-", 187: "=", 8: "←",
+    9: "Tab", 81: "Q", 87: "W", 69: "E", 82: "R", 84: "T", 89: "Y", 85: "U", 73: "I", 79: "O", 80: "P", 219: "[", 221: "]", 220: "\\",
+    20: "Caps", 65: "A", 83: "S", 68: "D", 70: "F", 71: "G", 72: "H", 74: "J", 75: "K", 76: "L", 186: ";", 222: "'", 13: "Enter",
+    16: "Shift", 90: "Z", 88: "X", 67: "C", 86: "V", 66: "B", 78: "N", 77: "M", 188: ",", 190: ".", 191: "/",
+    17: "Ctrl", 18: "Alt", 32: "Space", 0: " "
+};
+
+// Массив с клавишами обычной QWERTY раскладки, содержит информацию о положении кнопки и её длине 
+const keyboardKeyInfo = [
+    // Ряд 1
+    [
+        { code: 192, length: 1 }, { code: 49, length: 1 }, { code: 50, length: 1 }, { code: 51, length: 1 },
+        { code: 52, length: 1 }, { code: 53, length: 1 }, { code: 54, length: 1 }, { code: 55, length: 1 },
+        { code: 56, length: 1 }, { code: 57, length: 1 }, { code: 48, length: 1 }, { code: 189, length: 1 },
+        { code: 187, length: 1 }, { code: 8, length: 2.5 }
+    ],
+    // Ряд 2
+    [
+        { code: 9, length: 1.5 }, { code: 81, length: 1 }, { code: 87, length: 1 }, { code: 69, length: 1 },
+        { code: 82, length: 1 }, { code: 84, length: 1 }, { code: 89, length: 1 }, { code: 85, length: 1 },
+        { code: 73, length: 1 }, { code: 79, length: 1 }, { code: 80, length: 1 }, { code: 219, length: 1 },
+        { code: 221, length: 1 }, { code: 220, length: 2 }
+    ],
+    // Ряд 3
+    [
+        { code: 20, length: 2 }, { code: 65, length: 1 }, { code: 83, length: 1 }, { code: 68, length: 1 },
+        { code: 70, length: 1 }, { code: 71, length: 1 }, { code: 72, length: 1 }, { code: 74, length: 1 },
+        { code: 75, length: 1 }, { code: 76, length: 1 }, { code: 186, length: 1 }, { code: 222, length: 1.05 },
+        { code: 13, length: 2.5 }
+    ],
+    // Ряд 4
+    [
+        { code: 16, length: 2.5 }, { code: 90, length: 1 }, { code: 88, length: 1 }, { code: 67, length: 1 },
+        { code: 86, length: 1 }, { code: 66, length: 1 }, { code: 78, length: 1 }, { code: 77, length: 1 },
+        { code: 188, length: 1 }, { code: 190, length: 1 }, { code: 191, length: 1 }, { code: 16, length: 3.1 }
+    ],
+    // Ряд 5
+    [
+        { code: 17, length: 1.5 }, { code: 0, length: 1 }, { code: 18, length: 1.5 }, { code: 32, length: 6.3 },
+        { code: 18, length: 1.5 }, { code: 0, length: 1 }, { code: 0, length: 1 }, { code: 17, length: 2 }
+    ]
+];
+
+// Схемы управления клавиатурой, каждый массив - отдельная схема, в которой хранятся keycode клавиш в порядке возрастания частоты ноты
+const keyboardSchemes = [
+    // B V N C M X < F H D J S K A U R I E O P W
+    [66, 86, 78, 67, 77, 88, 188, 70, 72, 68, 74, 83, 75, 65, 85, 82, 73, 69, 79, 80, 87],
+
+    // A S D F G H J K L
+    [71, 70, 72, 68, 74, 83, 75, 65, 76],
+
+    // 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, -, =
+    [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187],
+];
 
 // Флаг, нажата ли ЛКМ
 var isMouseDown = false;
+
+// Флаг, нажат ли пробел (используется для повышения октавы при игре на клавиатуре)
+var isSpacePressed = false;
         
-// Выключаем флаг isMouseDown когда отжат ЛКМ
+// Выключаем флаг isMouseDown когда отжата ЛКМ
 $(document).on('mouseup', (event) => {
     // Проверка, что отпущена левая кнопка мыши (код 0)
     if (event.button === 0) {
@@ -63,11 +127,25 @@ $(document).on('mouseup', (event) => {
 });
 
 
-// Включаем флаг isMouseDown когда нажат ЛКМ
+// Включаем флаг isMouseDown когда нажата ЛКМ
 $(document).on('mousedown', (event) => {
     // Проверка, что нажата левая кнопка мыши (код 0)
     if (event.button === 0) {
         isMouseDown = true;
+    }
+});
+
+// Включаем флаг isSpacePressed когда нажат Пробел
+$(document).on('keydown', function (event) {
+    if (event.keyCode == 32) {
+        isSpacePressed = true;
+    }
+});
+
+// Выключаем флаг isSpacePressed когда отжат Пробел
+$(document).on('keyup', function (event) {
+    if (event.keyCode == 32) {
+        isSpacePressed = false;
     }
 });
 
@@ -92,17 +170,24 @@ function updateLabels() {
     }
 }
 
+
+// // // // // // //
+//  ГЛАВНЫЙ КЛАСС //
+// // // // // // //
+
 class Kalimba_Online {
     _kalimba = {};
 
     get soundfont() { return loadFromLocalStorage("soundfont", "Keylimba"); }
+    get currentSoundfont () { return Soundfonts[this.soundfont]; }
     get arrangement() { return loadFromLocalStorage("arrangement", "Alternating"); }
     get keysCount() { return loadFromLocalStorage("keysCount", 17); }
     get labelType() { return loadFromLocalStorage("labelType", "Number"); }
-    get currentSoundfont () { return Soundfonts[this.soundfont]; }
     get kalimba () { return this._kalimba; }
     get baseNote() { return parseInt(loadFromLocalStorage("baseNote", allNotesSharp.indexOf("C4"))); }
     get tunes() { return loadFromLocalStorage("tunes", Array(21).fill(0).join(',')).split(",").map(Number); }
+    get keyboardScheme () { return loadFromLocalStorage("keyboardScheme", 0); }
+    get currentKeyboardScheme () { return keyboardSchemes[this.keyboardScheme]; }
 
     set soundfont(value) { saveToLocalStorage("soundfont", value); }
     set arrangement(value) { saveToLocalStorage("arrangement", value); }
@@ -111,6 +196,7 @@ class Kalimba_Online {
     set kalimba(value) { this._kalimba = value; }
     set baseNote(value) { saveToLocalStorage("baseNote", value); }
     set tunes(value) { saveToLocalStorage("tunes", value); }
+    set keyboardScheme(value) { saveToLocalStorage("keyboardScheme", value); }
 
 
     constructor() {
@@ -215,7 +301,10 @@ class Kalimba_Online {
             let keyHeight = 30 + 5 * heightMultiplier;
 
             let letter = note.replace(/#/g, '♯');
-            
+
+            // Получаем надпись клавиатурной клавиши по номеру
+            let keyboardKey = this.currentKeyboardScheme[num];
+
             // Создаём клавишу
             const keyZone = $('<div>')
                 .addClass('key-zone')
@@ -225,6 +314,8 @@ class Kalimba_Online {
                 .append(
                     $('<div>').addClass('key').append(
                         $('<div>').addClass('note-text').append(
+                            $('<span>').addClass('note-keyboard-key').text(keyboardKeys[keyboardKey])
+                        ).append(
                             $('<span>').addClass('note-number').text(label)
                         ).append(
                             $('<span>').addClass('note-letter').text(letter.slice(0, -1)).append(
@@ -238,6 +329,7 @@ class Kalimba_Online {
                 <div class="key-zone" note="{note}" style="height: {keyHeight + 'px'};">
                     <div class="key">
                         <div class="note-text">
+                            <span class="note-keyboard-key">{keyboardKeys[keyboardKey]}</span>
                             <span class="note-number">{label}</span>
                             <span class="note-letter">{letter.slice(0, -1)}<sub>{letter.slice(-1)}</sub></span>
                         </div>
@@ -293,7 +385,7 @@ class Kalimba_Online {
                     while (key.attr('note') === undefined && i<2) {
                         key = key.parent();
                         i++;
-                        if (i>2) console.log(i);
+                        // if (i>2) console.log(i);
                     }
                     let note = key.attr('note');
 
@@ -330,7 +422,27 @@ class Kalimba_Online {
 
 const kalimba_online = new Kalimba_Online();
 
-// updateTunes обновляет элементы управления, которые настраивают клавиши
+
+// // // // // // // //
+//  ФУНКЦИИ И МЕТОДЫ //
+// // // // // // // //
+
+// updateKeyboardSchemes обновляет надписи клавиатурных клавиш на клавишах калимбы
+function updateKeyboardSchemes() {
+    $(".key-zone").each(function(){
+        var notenumberValue = $(this).attr("notenumber");
+        // Получаем надпись клавиатурной клавиши по номеру
+        let keyboardKey = kalimba_online.currentKeyboardScheme[notenumberValue];
+        
+        if (keyboardKey !== undefined) {
+            $(this).find(".note-keyboard-key").text(keyboardKeys[keyboardKey]);
+        } else {
+            $(this).find(".note-keyboard-key").empty();
+        }
+    });
+}
+
+// updateTunes обновляет элементы управления, которые настраивают клавиши (тюнинг клавиш)
 function updateTunes() {
     // Опустошаем поле
     $('.tune-field').empty();
@@ -393,6 +505,25 @@ function updateTunes() {
     });
 }
 
+// showKeyboardScheme выделяет на клавиатуре кнопки выбранной схемы
+function showKeyboardScheme(keyMapScheme) {
+    // Перебираем все клавиши на клавиатуре
+    $('.kb_key', '.kb_container').each(function (index, key) {
+        let keycode = $(key).data('keycode');
+        // Если клавиша есть в указанной схеме, то добавляем класс, иначе убираем
+        if (keyMapScheme.includes(keycode)) {
+            $(key).addClass('used');
+        } else {
+            $(key).removeClass('used');
+        }
+    });
+}
+
+
+// // // // // // // // // // //
+//  ПОСЛЕ ОТРИСОВКИ СТРАНИЦЫ  //
+// // // // // // // // // // //
+
 $(document).ready(function () {
 
     // Отображаем количество keysCount клавиш на странице (из localStorage)
@@ -418,7 +549,7 @@ $(document).ready(function () {
         )
     );
 
-    // Событие при смене количества клавиш
+    // Событие при смене базовой ноты
     $('#range-baseNote').on('input', function () {
         kalimba_online.baseNote = $('#range-baseNote').val();
         // $('#range-baseNote-value').text(allNotesSharp[kalimba_online.baseNote]);
@@ -461,36 +592,13 @@ $(document).ready(function () {
         $("#soundfonts_source").attr("href", kalimba_online.currentSoundfont.sourceUrl);
     });
 
-
-    let isSpacePressed = false;
-
     // Обработчик события keydown
     $(document).on('keydown', function (event) {
-        let keyNumMap = {
-            65: 7, //a
-            83: 5, //s
-            68: 3, //d
-            70: 1, //f
-            71: 0, //g
-            72: 2, //h
-            74: 4, //j
-            75: 6, //k
-            76: 8, //l
-        };
-
-        // Если нажат пробел
-        if (event.keyCode == 32) {
-            // Включаем маркер
-            isSpacePressed = true;
-            // И останавливаем дальнейшую обработку
-            event.preventDefault();
-            return;
-        }
 
         // Проверка, есть ли нота для нажатой клавиши
-        if (keyNumMap.hasOwnProperty(event.keyCode)) {
+        if (kalimba_online.currentKeyboardScheme.includes(event.keyCode)) {
             // Получаем номер нажатой клавиши и массив нот
-            let keyNum = keyNumMap[event.keyCode];
+            let keyNum = kalimba_online.currentKeyboardScheme.indexOf(event.keyCode);
             let notesArray = kalimba_online.getNotes();
             // Если нажат пробел, повышаем октаву
             if (isSpacePressed) keyNum +=7;
@@ -499,15 +607,45 @@ $(document).ready(function () {
         }
     });
 
-    // Обработчик события keyup
-    $(document).on('keyup', function (event) {
-        // Если отпущен пробел
-        if (event.keyCode == 32) {
-            // Выключаем маркер
-            isSpacePressed = false;
-        }
+
+    // Добавляем клавиатуру на страницу
+    // Перебираем ряды клавиатуры
+    keyboardKeyInfo.forEach(row => {
+        const rowElement = $('<div class="kb_row"></div>');
+        // Перебираем клавиши в ряду
+        row.forEach(key => {
+            // Создаём тег с клавишей и добавляем его на страницу
+            $('<div class="kb_key"></div>')
+                .text(keyboardKeys[key.code])
+                .css('flex-grow', key.length)
+                .attr("data-keycode", key.code)
+                .appendTo(rowElement);
+        });
+        // Добавляем созданный ряд в контейнер с клавиатурой на странице
+        $('#keyboard_container').append(rowElement);
     });
-    
+
+    // Отображаем схемы управления с клавиатур, хранящиеся в массиве keyboardSchemes
+    keyboardSchemes.forEach(function(_key, index) {
+        $('<label style="padding-right: 1em;">')
+            .appendTo($('#keyboard_schemes'))
+            .append(
+                $('<input type="radio" name="kb_scheme">')
+                    .attr('data-schemeid', index)
+                    .prop('checked', index == kalimba_online.keyboardScheme)
+            )
+            .append($('<span>').text(index + 1));
+    });
+    // Отображаем на клавиатуре текущую схему
+    showKeyboardScheme(kalimba_online.currentKeyboardScheme);
+    // Отмечаем выбранной текущую схему
+    $("input#"+kalimba_online.currentKeyboardScheme).prop('checked', true);
+    // Создаём событие на смену схемы
+    $('input', '#keyboard_control').on("click", function () {
+        kalimba_online.keyboardScheme = $('input:checked', '#keyboard_control').data("schemeid");
+        showKeyboardScheme(kalimba_online.currentKeyboardScheme);
+        updateKeyboardSchemes();
+    });
 });
 
 
@@ -528,8 +666,8 @@ TODO:
     - Игра на клавиатуре:
         + Возможность играть на клавиатуре
         + Нажатие клавиши с пробелом повышает её звучание на 1 октаву
-        - Различные пресеты управления
-        - Настроить отображение клавиатурных клавиш на клавишах калимбы
+        + Различные пресеты управления
+        + Настроить отображение клавиатурных клавиш на клавишах калимбы
     + Распределить файлы по папкам css и js
     + Залить на GitHub
     + Реструктуризировать JS код (Прикрутить ООП)

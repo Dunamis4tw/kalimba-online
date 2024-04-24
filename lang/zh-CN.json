@@ -14,6 +14,8 @@
     "option.localization": "本地化：",
     "option.source": "来源",
     "option.color": "颜色: ",
+    "option.keyboardсontrol": "键盘控制：",
+    "option.spaceincrease": "按下“空格”键可将八度增加1",
     "footer.builtwith": "使用 Pico 构建",
     "footer.sourcecode": "源代码",
     "footer.hostedby": "主办",

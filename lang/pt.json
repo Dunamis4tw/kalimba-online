@@ -14,6 +14,8 @@
     "option.localization": "Localização:",
     "option.source": "fonte",
     "option.color": "Cor:",
+    "option.keyboardсontrol": "Controle do teclado:",
+    "option.spaceincrease": "A tecla \"Espaço\" aumenta a oitava em 1",
     "footer.builtwith": "Construído com",
     "footer.sourcecode": "Código fonte",
     "footer.hostedby": "Hospedado por",

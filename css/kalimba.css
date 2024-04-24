@@ -123,6 +123,14 @@ html {
     margin-bottom: 0.3em;
 }
 
+.note-keyboard-key {
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 0.8em;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.5);
+}
+
 .note-letter {
     margin-top: 0.3em;
     margin-bottom: 0.3em;
@@ -131,6 +139,52 @@ html {
 .note-letter sub {
     font-size: x-small;
     font-weight: normal;
+}
+
+.kb_container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  max-width: 648px;
+  font-weight: bold;
+  padding-top: 8px;
+  margin: auto;
+}
+
+.kb_row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.kb_key {
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    white-space: nowrap;
+    border: var(--border-width) solid var(--form-element-border-color);
+    background-color: var(--form-element-background-color);
+    border-radius: var(--border-radius);
+    margin: 2px 2px 0 0;
+    width: 0px;
+}
+
+.used {
+    background: var(--primary);
+    color: var(--primary-inverse);
+}
+
+@media (max-width: 768px) {
+    .kb_container {
+        font-size: 0.8em;
+    }
+    .kb_key {
+        padding: 3px;
+    }
+}
+@media (max-width: 480px) {
+    .kb_container {
+        font-size: 0.5em;
+    }
 }
 
 @keyframes shake2 {

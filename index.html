@@ -159,6 +159,18 @@
                     <legend data-i18n="option.color">Color:</legend>
                     <!-- Заполняется в /js/pico-color-picker.js -->
                 </fieldset>
+
+                <fieldset id="keyboard_control">
+                    <legend data-i18n="option.keyboardсontrol">Keyboard Control:</legend>
+                    <div id="keyboard_schemes" style="display: flex;">
+                        <!-- Заполняется в js/kalimba.js на основе keyboardSchemes -->
+                    </div>
+                    <small data-i18n="option.spaceincrease">The "Space" key increases the octave by 1</small>
+                    <div id="keyboard_container" class="kb_container">
+                        <!-- Заполняется в js/kalimba.js в createKeyboard() -->
+                    </div>
+                </fieldset>
+
             </article>
         </section>
 
@@ -181,7 +193,7 @@
     <style>.github-fork-ribbon:before { background-color: var(--switch-background-color); }</style> -->
 
     <!-- Скрипт смены темы -->
-    <button class="contrast switcher theme-switcher"><i data-i18n="theme.darkmode.on" theme="dark">Turn on dark mode</i><!-- нужно, чтобы span не ставл пробел
+    <button class="contrast switcher theme-switcher"><i data-i18n="theme.darkmode.on" theme="dark">Turn on dark mode</i><!-- нужно, чтобы span не ставил пробел
          --><i data-i18n="theme.darkmode.off" theme="light">Turn off dark mode</i></button>
     <script src="/js/pico-theme-switcher.js"></script>
     

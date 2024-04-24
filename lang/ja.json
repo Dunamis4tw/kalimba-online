@@ -14,6 +14,8 @@
     "option.localization": "ローカリゼーション：",
     "option.source": "ソース",
     "option.color": "色:",
+    "option.keyboardсontrol": "キーボードコントロール：",
+    "option.spaceincrease": "「スペース」キーはオクターブを1増やします",
     "footer.builtwith": "で構築",
     "footer.sourcecode": "ソースコード",
     "footer.hostedby": "ホスト",

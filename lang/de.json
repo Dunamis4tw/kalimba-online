@@ -14,6 +14,8 @@
     "option.localization": "Lokalisierung:",
     "option.source": "Quelle",
     "option.color": "Farbe:",
+    "option.keyboardсontrol": "Tastatursteuerung:",
+    "option.spaceincrease": "Die Taste \"Leertaste\" erhöht die Oktave um 1",
     "footer.builtwith": "Erstellt mit",
     "footer.sourcecode": "Quellcode",
     "footer.hostedby": "Gehostet von",

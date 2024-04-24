@@ -14,6 +14,8 @@
     "option.localization": "Localisation :",
     "option.source": "source",
     "option.color": "Couleur:",
+    "option.keyboardсontrol": "Contrôle au clavier :",
+    "option.spaceincrease": "La touche \"Espace\" augmente l'octave de 1",
     "footer.builtwith": "Construit avec",
     "footer.sourcecode": "Code source",
     "footer.hostedby": "Hébergé par",
