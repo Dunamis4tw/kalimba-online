@@ -77,14 +77,14 @@
             <article>
                 <h2 data-i18n="option.title">Options</h2>
                 <fieldset>
-                    <label for="range-keys"><span data-i18n="option.keys"> Keys: </span><span id="range-keys-value">17</span>
-                        <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
+                    <label for="range-volume"><span data-i18n="option.volume"> Volume: </span><span id="range-volume-value">75</span><span>%</span>
+                        <input type="range" min="0" max="100" value="75" id="range-volume" name="range-volume">
                     </label>
                 </fieldset>
 
                 <fieldset>
-                    <label for="range-volume"><span data-i18n="option.volume"> Volume: </span><span id="range-volume-value">75</span><span>%</span>
-                        <input type="range" min="0" max="100" value="75" id="range-volume" name="range-volume">
+                    <label for="range-keys"><span data-i18n="option.keys"> Keys: </span><span id="range-keys-value">17</span>
+                        <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
                     </label>
                 </fieldset>
 
@@ -210,6 +210,21 @@
 
     <!-- Скрипт локализации -->
     <script src="/js/lang.js"></script>
+
+    <script>
+        // Проверка поддержки service-worker и его регистрация
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('[Service-worker] Service Worker зарегистрирован с областью:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('[Service-worker] Регистрация Service Worker не удалась:', error);
+                    });
+            });
+        }
+    </script>
 
     <!-- Скрипт, добавляющий кнопку консоли на сайте для отладки на телефонах -->
     <!-- <script src="//cdn.jsdelivr.net/npm/eruda"></script>
