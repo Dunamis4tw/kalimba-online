@@ -76,26 +76,26 @@
         <section id="options">
             <article>
                 <h2 data-i18n="option.title">Options</h2>
-                <fieldset>
+                <fieldset class="option-volume">
                     <label for="range-volume"><span data-i18n="option.volume"> Volume: </span><span id="range-volume-value">75</span><span>%</span>
                         <input type="range" min="0" max="100" value="75" id="range-volume" name="range-volume">
                     </label>
                 </fieldset>
 
-                <fieldset>
-                    <label for="range-keys"><span data-i18n="option.keys"> Keys: </span><span id="range-keys-value">17</span>
-                        <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
-                    </label>
-                </fieldset>
-
-                <fieldset>
+                <fieldset class="option-baseNote">
                     <label for="range-baseNote">
                         <span data-i18n="option.baseNote"> Base Note: </span><span id="range-baseNote-value"><span>C<sub>4</sub></span></span>
                     </label>
                     <input type="range" min="35" max="46" value="39" id="range-baseNote" name="range-baseNote">
                 </fieldset>
+
+                <fieldset class="option-keys">
+                    <label for="range-keys"><span data-i18n="option.keys"> Keys: </span><span id="range-keys-value">17</span>
+                        <input type="range" min="8" max="21" value="17" id="range-keys" name="range-keys">
+                    </label>
+                </fieldset>
                 
-                <fieldset>
+                <fieldset class="option-tune">
                     <label>
                         <span data-i18n="option.tune"> Tune keys: </span>
                     </label>
@@ -104,7 +104,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset id="arrangement-radio-list">
+                <fieldset id="arrangement-radio-list" class="option-arrangement">
                     <legend data-i18n="option.arrangement"> Arrangement: </legend>
                     <label for="Ascending">
                         <input type="radio" id="Ascending" name="arrangement" value="Ascending">
@@ -120,7 +120,7 @@
                     </label>
                 </fieldset>
                 
-                <fieldset id="labeltype-radio-list">
+                <fieldset id="labeltype-radio-list" class="option-labeltype">
                     <legend data-i18n="option.labeltype"> Label Еype: </legend>
                     <div style="display: flex;">
                         <label for="Number" style="padding-right: 1em;">
@@ -138,7 +138,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset>
+                <fieldset class="option-soundfonts">
                     <label for="soundfonts">
                         <span data-i18n="option.soundfonts">Soundfonts</span>
                         <small>
@@ -152,7 +152,7 @@
                     </select>
                 </fieldset>
 
-                <fieldset>
+                <fieldset class="option-localization">
                     <label for="localization" data-i18n="option.localization">
                         Localization:
                     </label>
@@ -161,17 +161,20 @@
                     </select>
                 </fieldset>
 
-                <fieldset id="customization">
+                <fieldset id="customization" class="option-color">
                     <legend data-i18n="option.color">Color:</legend>
                     <!-- Заполняется в /js/pico-color-picker.js -->
                 </fieldset>
 
-                <fieldset id="keyboard_control">
+                <fieldset id="keyboard_control" class="option-keyboardсontrol">
                     <legend data-i18n="option.keyboardсontrol">Keyboard Control:</legend>
                     <div id="keyboard_schemes" style="display: flex;">
                         <!-- Заполняется в js/kalimba.js на основе keyboardSchemes -->
                     </div>
                     <small data-i18n="option.spaceincrease">The "Space" key increases the octave by 1</small>
+                </fieldset>
+
+                <fieldset class="option-kb_container">
                     <div id="keyboard_container" class="kb_container">
                         <!-- Заполняется в js/kalimba.js в createKeyboard() -->
                     </div>

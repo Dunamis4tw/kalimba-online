@@ -475,7 +475,7 @@ function updateTunes() {
             $('<span>', {
                 'id': 'range-tune-value-' + index,
             }).append(
-                $('<span>').text(letter.slice(0, -1)).append(
+                $('<small>').text(letter.slice(0, -1)).append(
                     $('<sub>').text(letter.slice(-1))
                 )
             )
