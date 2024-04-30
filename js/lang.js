@@ -55,7 +55,7 @@ function loadLanguage(lang) {
             // Если ключа в локализации нет, ключ берётся из дефолтного языка
             $(this).text(data[key] || defaultLocalization[key]);
         });
-        $('meta[name="description"]').attr('content', data["description"] || defaultLocalization["description"]);
+        $('meta[name="description"]').attr('content', data["seo.description"] || defaultLocalization["seo.description"]);
     });
 }
 
