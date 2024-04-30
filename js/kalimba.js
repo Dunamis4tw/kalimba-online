@@ -503,7 +503,7 @@ function updateTunes() {
 
         // Заменяем навзение клавиши в настройках клавиши
         $('#range-tune-value-' + notenumber).empty().append(
-            $('<span>').text(letter.slice(0, -1)).append(
+            $('<small>').text(letter.slice(0, -1)).append(
                 $('<sub>').text(letter.slice(-1))
             )
         );
