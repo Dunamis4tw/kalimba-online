@@ -69,7 +69,8 @@ const tryNetwork = (req, timeout) => {
 
 // Получение данных из кэша при отсутствии сети
 const getFromCache = (req) => {
-    console.log('[Service-worker] Сеть отключена, поэтому получаем данные из кэша...')
+    console.log('[Service-worker] Не удалось загрузить данные из интернета, получаем данные из кэша...');
+    console.log(req.url);
     return caches.open(CACHE_NAME).then((cache) => {
         return cache.match(req).then((result) => {
             return result || Promise.reject("no-match");
@@ -99,7 +100,7 @@ self.addEventListener('activate', (e) => {
 
 // Событие получения запроса
 self.addEventListener("fetch", (e) => {
-    console.log("[Service-worker] Попытка получить данные из сети или из кэша");
+    // console.log("[Service-worker] Попытка получить данные из сети или из кэша: " + e.request.url);
     // Попытаться получить данные из сети, и если не удается, вернуть закэшированную копию.
     e.respondWith(tryNetwork(e.request, CACHE_TIMEOUT).catch(() => getFromCache(e.request)));
 });
