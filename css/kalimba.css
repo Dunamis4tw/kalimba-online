@@ -240,7 +240,11 @@ select {
         display: inline-block;
     }
 }
-
+@media (min-width: 768px) {
+    .option-arrangement {
+        display: flex;
+    }
+}
 
 #range-volume {
     margin-bottom: 0px;
@@ -296,20 +300,46 @@ select {
 }
 
 input[type=range][orient=vertical] {
-    appearance: slider-vertical;
-    -webkit-appearance: slider-vertical;
+    writing-mode: vertical-lr;
     width: 16px;
     height: 48px;
     margin-top: 2px;
     margin-bottom: 4px;
-    /* В некоторых браузерах почему-то нет фона */
-    background: var(--range-border-color);
 }
 
-/* Уменьшаем ползунок в Firefox (он там почему то больше) */
+/* Настраиваем трек в Chrome, Opera, Safari, Edge */
+input[type=range][orient=vertical]::-webkit-slider-runnable-track {
+    width: 5px;
+}
+
+/* Настраиваем трек в Mozilla Firefox */
+input[type=range][orient=vertical]::-moz-range-track {
+    /* В Firefox высота трека отличается от других браузеров */
+    height: auto;
+    width: 5px;
+}
+
+/* Настраиваем ползунок в Chrome, Opera, Safari, Edge */
+input[type=range][orient=vertical]::-webkit-slider-thumb {
+    height: 23px;
+    width: 23px;
+    margin: 0 0 0 -9px;
+}
+
+/* Настраиваем ползунок в Firefox (он там почему то больше) */
 input[type=range][orient=vertical]::-moz-range-thumb {
-    height: 16px;
-    width: 16px;
+    height: 19px;
+    width: 19px;
+    margin: 0 0 0 -3px;
+}
+
+/* Меняем фон всех ползунков на текущий цвет темы */
+input[type=range]::-moz-range-thumb {
+    background: var(--primary);
+}
+
+input[type=range]::-webkit-slider-thumb {
+    background: var(--primary);
 }
 
 .tune-label {
