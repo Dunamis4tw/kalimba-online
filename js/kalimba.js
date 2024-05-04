@@ -308,11 +308,14 @@ class Kalimba_Online {
             // Получаем итоговую метку клавиши
             let label = dots + "\n" + labelNum;
 
-            // Расчитываем множитель высоты
-            let heightMultiplier = (27 + notesArray.length) - notesArray.indexOf(note);
+            let keys = notesArray.length;
+            let x = notesArray.indexOf(note);
 
             // Расчитываем высоту клавиши
-            let keyHeight = 30 + 5 * heightMultiplier;
+            // let keyHeight = 165 + 5*(keys - x); // Прямолинейная
+            // let keyHeight = 315 - 5*(21-keys) - 30*Math.sqrt(x); // Степенная
+            // let keyHeight = 280 - 4*(21-keys) - 25*Math.sqrt(x); // Степенная
+            let keyHeight = 260 - 3*(21-keys) - 20*Math.sqrt(x); // Степенная
 
             let letter = note.replace(/#/g, '♯');
 
