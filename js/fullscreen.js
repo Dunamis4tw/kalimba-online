@@ -2,7 +2,7 @@ $(document).ready(function () {
     // Кнопка переключения Фуллскрина
     const fullscreenButton = $("#fullscreenButton");
     // Блок, который необходимо делать в фулл скрин
-    const fullscreenDiv = $("#fullscreenDiv")[0];
+    const mainContainer = $("#main-container")[0];
 
     // Событие на нажатие на кнопку Фуллскрина
     fullscreenButton.on("click", function () {
@@ -19,24 +19,24 @@ $(document).ready(function () {
         if (!document.fullscreenElement) {
             $("#fullscreen-on").show();
             $("#fullscreen-off").hide();
-            $("#fullscreenDiv").removeClass("fullscreen");
+            $("#main-container").removeClass("fullscreen");
         }
     });
 
     // Функция входа в полный экран
     function enterFullscreen() {
-        if (fullscreenDiv.requestFullscreen) {
-            fullscreenDiv.requestFullscreen();
-        } else if (fullscreenDiv.mozRequestFullScreen) {
-            fullscreenDiv.mozRequestFullScreen();
-        } else if (fullscreenDiv.webkitRequestFullscreen) {
-            fullscreenDiv.webkitRequestFullscreen();
-        } else if (fullscreenDiv.msRequestFullscreen) {
-            fullscreenDiv.msRequestFullscreen();
+        if (mainContainer.requestFullscreen) {
+            mainContainer.requestFullscreen();
+        } else if (mainContainer.mozRequestFullScreen) {
+            mainContainer.mozRequestFullScreen();
+        } else if (mainContainer.webkitRequestFullscreen) {
+            mainContainer.webkitRequestFullscreen();
+        } else if (mainContainer.msRequestFullscreen) {
+            mainContainer.msRequestFullscreen();
         }
         $("#fullscreen-on").hide();
         $("#fullscreen-off").show();
-        $("#fullscreenDiv").addClass("fullscreen");
+        $("#main-container").addClass("fullscreen");
     }
 
     // Функция выхода из полного экрана
@@ -52,6 +52,6 @@ $(document).ready(function () {
         }
         $("#fullscreen-on").show();
         $("#fullscreen-off").hide();
-        $("#fullscreenDiv").removeClass("fullscreen");
+        $("#main-container").removeClass("fullscreen");
     }
 });

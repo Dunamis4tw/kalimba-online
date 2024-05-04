@@ -3,7 +3,6 @@ const CACHE_NAME = 'kalimba-game-cache-v1';
 const CACHE_TIMEOUT = 400;
 // Список URL-адресов для кэширования
 const urlsToCache = [
-    './css/fullscreen.css',
     './css/kalimba.css',
     './css/pico-color-picker.css',
     './css/pico-theme-switcher.css',

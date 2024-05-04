@@ -3,7 +3,7 @@ html {
     touch-action: manipulation;
 }
 
-.kalimba-keys {
+.kalimba-container {
     display: flex;
     flex-direction: row;
     align-items: top;
@@ -13,7 +13,7 @@ html {
 
 /* Для телефонов */
 @media (min-width: 0px) {
-    .kalimba-keys {
+    .kalimba-container {
         /* Отступы между между клавишами */
         justify-content: space-evenly;
     }
@@ -21,7 +21,7 @@ html {
 
 /* Для ПК */
 @media (min-width: 768px) {
-    .kalimba-keys {
+    .kalimba-container {
         justify-content: center;
     }
 }
@@ -118,7 +118,7 @@ html {
     perspective: 1000px;
 }
 
-.kalimba-keys {
+.kalimba-container {
     margin-top: 0.3em;
     margin-bottom: 0.3em;
 }
@@ -290,15 +290,6 @@ select {
     100% {transform: translate3d(-0.005em, 0, 0);}
 }
 
-/* Блок с кнопками под калимбой */
-.buttons {
-    margin-top: 1em;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: flex-end;
-}
-
 input[type=range][orient=vertical] {
     writing-mode: vertical-lr;
     width: 16px;
@@ -361,3 +352,87 @@ input[type=range]::-webkit-slider-thumb {
     justify-content: center;
     flex-wrap: wrap;
 }
+
+/* Стиль для режима "Полный экран" */
+.fullscreen {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    --color: var(--primary-inverse);
+    height: -webkit-fill-available;
+    margin: 0;
+    margin-bottom: var(--spacing);
+    padding: 3vh;
+}
+
+/* ** ** ** ** ** ** ** ** ** ** ** */
+/* ** ПАНЕЛЬ КНОПОК ПОД КАЛИМБОЙ ** */
+/* ** ** ** ** ** ** ** ** ** ** ** */
+
+/* Блок с кнопками под калимбой */
+.buttons-container {
+    margin-top: 1em;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.buttons-container .button {
+    position: relative;
+    overflow: hidden;
+    background: var(--primary);
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    margin-left: 1em;
+}
+
+.icon {
+    width: 30px;
+    position: absolute;
+}
+
+.loader {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: var(--primary);
+    --anim-load-duration: 2s;
+    opacity: 0;
+}
+
+.anim-spin .loader {
+    opacity: 1;
+    animation: spin var(--anim-load-duration) linear infinite;
+}
+
+.anim-load .loader circle {
+    animation: dash var(--anim-load-duration) linear infinite;
+}
+
+.anim-load .loader {
+    opacity: 1;
+    transform: rotate(-90deg);
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg);}
+}
+
+@keyframes dash {
+    0% { stroke-dashoffset: 100; }
+    100% { stroke-dashoffset: 0; }
+}
+
+
+/* ** ** ** ** ** ** ** ** ** ** ** */
+/* ** ** ** ** ** ** ** ** ** ** ** */
+/* ** ** ** ** ** ** ** ** ** ** ** */

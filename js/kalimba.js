@@ -117,7 +117,19 @@ var isMouseDown = false;
 
 // Флаг, нажат ли пробел (используется для повышения октавы при игре на клавиатуре)
 var isSpacePressed = false;
-        
+
+// Флаг, ведётся ли запись
+var isRecording = false;
+
+// Флаг, воспроизводится ли запись
+var isPlaying = false;
+
+// Переменная для сохранения записи
+var sequence = [];
+
+// Переменная для хранения времени последней нажатой клавиши
+var prevTime;
+
 // Выключаем флаг isMouseDown когда отжата ЛКМ
 $(document).on('mouseup', (event) => {
     // Проверка, что отпущена левая кнопка мыши (код 0)
@@ -125,7 +137,6 @@ $(document).on('mouseup', (event) => {
         isMouseDown = false;
     }
 });
-
 
 // Включаем флаг isMouseDown когда нажата ЛКМ
 $(document).on('mousedown', (event) => {
@@ -220,9 +231,9 @@ class Kalimba_Online {
         var KalimbaSF = Soundfont.instrument(this._audioContext, this.currentSoundfont.url);
 
         // Чистим поле от предыдущих клавиш
-        $('.kalimba-keys').empty();
+        $('.kalimba-container').empty();
         // Отображаем колесо загрузки
-        $('.kalimba-keys').attr("aria-busy", true);
+        $('.kalimba-container').attr("aria-busy", true);
 
         // Обновляем события
         KalimbaSF.then((k) => {
@@ -231,7 +242,7 @@ class Kalimba_Online {
             // Добавляем клавиши на экран
             this.addKeys();
             // Скрываем колесо загрузки
-            $('.kalimba-keys').removeAttr("aria-busy");
+            $('.kalimba-container').removeAttr("aria-busy");
         });
     }
 
@@ -259,7 +270,7 @@ class Kalimba_Online {
     // Добавляет Клавиши на форму
     addKeys() {
         // Чистим поле от предыдущих клавиш
-        $('.kalimba-keys').empty();
+        $('.kalimba-container').empty();
 
         // Получаем массив нот с текущими настройками
         let notesArray = this.getNotes();
@@ -400,7 +411,7 @@ class Kalimba_Online {
             });
 
             // Добавляем созданную клавишу на поле
-            $('.kalimba-keys').append(keyZone);
+            $('.kalimba-container').append(keyZone);
         });
 
         // Обновляем метки
@@ -408,14 +419,38 @@ class Kalimba_Online {
     }
 
     // Воспроизводит звук
-    playSound(note) {
-        // Считаем громкость по логарифмической шкале (по ощущениям хуже, чем с обычной шкалой):
-        // let currentVolume = this.currentSoundfont.gain * Math.log10(1 + 9 * this.volume / 100);
-        // Считаем громкость по обычной шкале:
-        let currentVolume = this.currentSoundfont.gain * this.volume / 100;
-        this._kalimba.play(note, 0, { gain: currentVolume });
-        this.keyShake($(`.key-zone[note='${note}'] .key`));
+    playSound(note, options = { play: true, animate: true, record: true }) {
+
+        // Воспроизводим звук, если флаг play установлен в true
+        if (options.play) {
+            // Считаем громкость по логарифмической шкале (по ощущениям хуже, чем с обычной шкалой):
+            // let currentVolume = this.currentSoundfont.gain * Math.log10(1 + 9 * this.volume / 100);
+            // Считаем громкость по обычной шкале:
+            let currentVolume = this.currentSoundfont.gain * this.volume / 100;
+            // Воспроизводим звук с текущей кромкостью
+            this._kalimba.play(note, 0, { gain: currentVolume });
+        }
+
+        // Запускаем анимацию, если флаг animate установлен в true
+        if (options.animate) {
+            this.keyShake($(`.key-zone[note='${note}'] .key`));
+        }
         console.log('Pressed \'' + note + '\' (' + allNotesSharp.indexOf(note) + ')');
+
+        // Записываем нажатую ноту, если флаги record и isRecording установлены в true
+        if (options.record && isRecording) {
+            // Если это первая нажатая нота, то запоминаем время нажатия
+            if (sequence.length == 0) prevTime = Date.now();
+            // Запоминаем текущее время
+            var currentTime = Date.now();
+            // Считаем сколько времени прошло с предыдущего нажатия ноты
+            var timeElapsed = currentTime - prevTime;
+            // Добавляем в массив с нотами ноту
+            sequence.push({ soundId: note, time: timeElapsed });
+            console.log('[REC] Recorded \'' + note + '\' with a duration of ' + timeElapsed + 'ms');
+            // Обновляем время последнего нажатия клавиши на текущее
+            prevTime = currentTime;
+        }
     }
     
     // Воспроизводит анимацию тряски клавиши
@@ -508,7 +543,7 @@ function updateTunes() {
             )
         );
         // Воспроизводим звук изменённой клавиши
-        kalimba_online.playSound(notesArray[notenumber]);
+        kalimba_online.playSound(notesArray[notenumber], { play: true, animate: true, record: false });
     });
 }
 
@@ -526,6 +561,100 @@ function showKeyboardScheme(keyMapScheme) {
     });
 }
 
+// Событие нажатия на кнопку записи
+$('#recordButton').click(function() {
+    if (isRecording) {
+        // Если запись велась - останавливаем
+        isRecording = false;
+
+        // Меняем иконки на кнопке
+        $("#icon-record").show();
+        $("#icon-spin").hide();
+
+        // Если записана хоть одна нота
+        if (sequence.length > 0) {
+            // Добавляем пустую ноту с пузой между последней нажатой клавиши и остановкой записи 
+            var timeElapsed = Date.now() - prevTime;
+            sequence.push({ soundId: null, time: timeElapsed });
+
+            // Делаем активной кнопку воспроизведения
+            $("#playButton").attr("disabled", null);
+
+            // Считаем сколько секунд длится вся запись
+            let duration = 0;
+            for (let i = 0; i < sequence.length; i++) {
+                duration += sequence[i].time;
+              }
+            duration = duration/1000;
+            // Устанавливаем время анимации для крувого прогресс-бара
+            $("#playButton .loader").css('--anim-load-duration', duration+"s");
+            
+            // Сообщаем в логи что запись закончена
+            console.log('[REC] Recording stopped. Total duration: ' + duration + 's');
+            
+            console.log('[REC] Recording stopped. Total duration: ' + duration + 's');
+            console.log('[REC] Recorded sequence:', sequence);
+        }
+    } else {
+        // Если запись НЕ велась - начинаем записывать
+        isRecording = true;
+
+        // Сообщаем в логи что началась запись
+        console.log('[REC] Recording started');
+
+        // Создаём пустой массив для записанной последовательности
+        sequence = [];
+
+        // Меняем иконки на кнопке 
+        $("#icon-record").hide();
+        $("#icon-spin").show();
+
+        // Делаем НЕактивной кнопку воспроизведения
+        $("#playButton").attr("disabled", "");
+    }
+});
+
+// Событие нажатия на кнопку воспроизведения
+$('#playButton').click(function() {
+    if (isPlaying) {
+        // Если запись проигрывалась - останавливаем
+        isPlaying = false;
+        
+        // Меняем иконки на кнопке 
+        $("#icon-play").show();
+        $("#icon-pause").hide();
+        $("#icon-load").hide();
+
+        // Делаем активной кнопку записи
+        $("#recordButton").attr("disabled", null);
+    } else {
+        // Если запись НЕ проигрывалась - начинаем воспроизведение
+        isPlaying = true;
+        let index = 0;
+
+        // Объявляем рекурсивную функцию, которая воспроизводит текущую ноту и запускает себя со следующей нотой через паузу sequence[index].time
+        function playNextNote() {
+            // Завершаем воспроизведение, если флаг выключен
+            if (!isPlaying) return;
+            // Воспроизводим текущую ноту с параметрами: без анимации и без записи
+            if (sequence[index].soundId != null) kalimba_online.playSound(sequence[index].soundId, { play: true, animate: false, record: false });
+            // Увеличиваем индекс (и зацикливаем)
+            index = (index + 1) % sequence.length;
+            // Запускаем следующую ноту после паузы
+            setTimeout(playNextNote, sequence[index].time);
+        }
+        // Запускаем рекурсивную функцию
+        playNextNote();
+
+        // Меняем иконки на кнопке 
+        $("#icon-play").hide();
+        $("#icon-pause").show();
+        $("#icon-load").show();
+
+        // Делаем НЕактивной кнопку записи
+        $("#recordButton").attr("disabled", "");
+    }
+});
 
 // // // // // // // // // // //
 //  ПОСЛЕ ОТРИСОВКИ СТРАНИЦЫ  //
@@ -579,7 +708,7 @@ $(document).ready(function () {
             )
         );
         kalimba_online.addKeys();
-        kalimba_online.playSound(allNotesSharp[kalimba_online.baseNote]);
+        kalimba_online.playSound(allNotesSharp[kalimba_online.baseNote], { play: true, animate: false, record: false });
         updateTunes();
     });
 
