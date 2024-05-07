@@ -2,6 +2,7 @@
   "id": "/",
   "name": "Kalimba Online",
   "short_name": "Kalimba",
+  "description": "Play a customizable kalimba online with Kalimba Online. Customize colors, key layouts, sound types, volume, and more to create your unique instrument. Choose octaves, tune individual keys, and enjoy playing right in your browser. Easily control with your keyboard for maximum convenience.",
   "icons": [
     {
       "src": "img/152.png",
@@ -26,25 +27,53 @@
   ],
   "screenshots": [
     {
-      "src": "img/screen1.png",
-      "sizes": "920x468",
+      "src": "img/desktop_screen1.png",
+      "sizes": "920x580",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "8 key kalimba"
+      "label": "17 key kalimba on desktop"
     },
     {
-      "src": "img/screen2.png",
-      "sizes": "920x468",
+      "src": "img/desktop_screen2.png",
+      "sizes": "920x580",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "21 key kalimba"
+      "label": "8 key kalimba on desktop"
     },
     {
-      "src": "img/screen3.png",
-      "sizes": "425x539",
+      "src": "img/desktop_screen3.png",
+      "sizes": "920x580",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Customization options on desktop: Volume, Base note, Keys count, Key arrangement and Label type."
+    },
+    {
+      "src": "img/desktop_screen4.png",
+      "sizes": "920x580",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Customization options on desktop: Soundfonts, Localization, Color and Keyboard controls."
+    },
+    {
+      "src": "img/mobile_srceen1.png",
+      "sizes": "375x667",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "8 key kalimba on phone"
+    },
+    {
+      "src": "img/mobile_srceen2.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Customization options on phone: Volume, Base note, Keys count, Key arrangement, Label type."
+    },
+    {
+      "src": "img/mobile_srceen3.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Customization options on phone: Soundfonts, Localization, Color and Keyboard controls."
     }
   ],
   "start_url": "/",
